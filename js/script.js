@@ -8,7 +8,7 @@ function drawSnailDiagram(data, selectedDataPoint) {
 	const maxRadius = Math.min(canvas.width, canvas.height) / 2 - 20; // Adjusted to ensure it fits within the canvas
 	const totalDays = 366; // Total days in a year
 	const angleStep = (2 * Math.PI) / 365; // Full circle divided by the number of days
-	const radiusStep = maxRadius / totalDays; // Decrease radius step to create a tighter spiral
+	const radiusStep = 10; // Adjust radius step to create a tighter spiral
 
 	console.log(
 		"Drawing diagram with data:",
@@ -30,16 +30,15 @@ function drawSnailDiagram(data, selectedDataPoint) {
 		const x = centerX + radius * Math.cos(angle - Math.PI / 2); // Adjust angle for canvas coordinate system
 		const y = centerY + radius * Math.sin(angle - Math.PI / 2); // Adjust angle for canvas coordinate system
 
-		const bubbleSize = Math.min(radiusStep, 5 + value / 1000000); // Adjust size based on value
+		const bubbleSize = 20; // Minimum bubble size of 20px
 
-		const color =
-			value > 0
-				? `rgba(255, 0, 0, ${Math.min(value / 1000000000, 1)})`
-				: "#eee";
+		// Calculate color intensity based on value, closer to 100% more red
+		const colorIntensity = Math.min(value / 100, 1);
+		const color = `rgba(255, 0, 0, ${colorIntensity})`;
 
 		ctx.beginPath();
 		ctx.arc(x, y, bubbleSize, 0, 2 * Math.PI);
-		ctx.fillStyle = "red"; // Set the color to red
+		ctx.fillStyle = color; // Set the color based on value
 		ctx.fill();
 		ctx.closePath();
 	});
@@ -67,7 +66,7 @@ function drawSnailDiagram(data, selectedDataPoint) {
 				const x = centerX + radius * Math.cos(angle - Math.PI / 2);
 				const y = centerY + radius * Math.sin(angle - Math.PI / 2);
 
-				const bubbleSize = Math.min(radiusStep, 5 + value / 1000000);
+				const bubbleSize = 20; // Minimum bubble size of 20px
 
 				const distance = Math.sqrt(
 					(mouseX - x) ** 2 + (mouseY - y) ** 2

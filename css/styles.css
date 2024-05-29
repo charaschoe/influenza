@@ -1,100 +1,101 @@
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	margin: 0;
 }
 
 #mainContainer {
-    display: flex;
-    flex-direction: row;
-    height: 100%;
+	display: flex;
+	flex-direction: row;
+	height: 100%;
 }
 
 #controls {
-    margin-right: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+	margin-right: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 #countrySelector {
-    border: none;
-    background: none;
-    padding: 0;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 1.5em;
-    outline: none;
+	border: none;
+	background: none;
+	padding: 0;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 1.5em;
+	outline: none;
 }
 
 #countrySelector option {
-    margin: 5px 0;
+	margin: 5px 0;
 }
 
 #visualizationContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
 
 #heatmapContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 #heatmapCanvas {
-    border: 1px solid #ccc;
+	border: 1px solid #ccc;
+	width: 800px;
+	height: 600px;
 }
 
 .tooltip {
-    position: absolute;
-    background: #fff;
-    padding: 5px;
-    border: 1px solid #ccc;
-    display: none;
-    pointer-events: none;
+	position: absolute;
+	background: #fff;
+	padding: 5px;
+	border: 1px solid #ccc;
+	display: none;
+	pointer-events: none;
 }
 
 #timeSliderContainer {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 #timeSlider {
-    width: 80%;
+	width: 80%;
 }
 
 #yearLabel {
-    margin-top: 10px;
-    font-size: 18px;
-    font-weight: bold;
+	margin-top: 10px;
+	font-size: 18px;
+	font-weight: bold;
 }
 
 #controls {
-    margin-right: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+	margin-right: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 #dataPointSelector {
-    margin-top: 10px;
-    border: none;
-    background: none;
-    padding: 0;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 1.5em;
-    outline: none;
+	margin-top: 10px;
+	border: none;
+	background: none;
+	padding: 0;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 1.5em;
+	outline: none;
 }
 
 #dataPointSelector option {
-    margin: 5px 0;
+	margin: 5px 0;
 }
-
