@@ -18,6 +18,8 @@ function drawSnailDiagram(data, selectedDataPoint) {
 	);
 
 	data.forEach((d) => {
+		console.log("Processing data point:", d); // Log each data point
+
 		const date = new Date(d.Date);
 		const dayOfYear =
 			(date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24;
@@ -37,7 +39,7 @@ function drawSnailDiagram(data, selectedDataPoint) {
 
 		ctx.beginPath();
 		ctx.arc(x, y, bubbleSize, 0, 2 * Math.PI);
-		ctx.fillStyle = color;
+		ctx.fillStyle = "red"; // Set the color to red
 		ctx.fill();
 		ctx.closePath();
 	});
