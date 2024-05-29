@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="css/styles.css" />
+		<title>Snail Diagram</title>
+		<style>
+			body {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+				background-color: #f0f0f0;
+			}
+			#controls {
+				display: flex;
+				flex-direction: column;
+				margin-right: 20px;
+			}
+			canvas {
+				border: 1px solid #ccc;
+				background-color: #fff;
+			}
+			#tooltip {
+				position: absolute;
+				display: none;
+				background: #fff;
+				border: 1px solid #000;
+				padding: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="controls">
+			<label for="countrySelector">Select Country:</label>
+			<select id="countrySelector"></select>
+			<label for="dataPointSelector">Select Data Type:</label>
+			<select id="dataPointSelector">
+				<option
+					value="Share of positive tests - All types of surveillance"
+				>
+					Share of positive tests - All types of surveillance
+				</option>
+			</select>
+			<label for="timeSlider">Select Year:</label>
+			<input
+				type="range"
+				id="timeSlider"
+				min="2000"
+				max="2020"
+				step="1"
+			/>
+			<span id="yearLabel">2000</span>
+		</div>
+		<canvas id="heatmapCanvas" width="800" height="600"></canvas>
+		<div id="tooltip"></div>
+		<script src="lib/jquery-3.7.1.min.js"></script>
+		<script src="lib/gmynd.js"></script>
+		<script src="data/influenza.js"></script>
+		<script src="js/script.js"></script>
+	</body>
+</html>
