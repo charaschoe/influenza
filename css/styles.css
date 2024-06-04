@@ -47,7 +47,6 @@ body {
 }
 
 #heatmapCanvas {
-	border: 1px solid #ccc;
 	width: 800px;
 	height: 600px;
 }
@@ -90,12 +89,13 @@ body {
 	border: none;
 	background: none;
 	padding: 0;
-	font-size: 16px;
+	font-size: 12px;
 	font-weight: bold;
-	line-height: 1.5em;
+	line-height: 1.2em;
 	outline: none;
 }
 
 #dataPointSelector option {
-	margin: 5px 0;
+	margin: 3px 0;
+	font-size: 12px;
 }

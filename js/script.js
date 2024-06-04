@@ -30,7 +30,7 @@ function drawSnailDiagram(data, selectedDataPoint) {
 		const x = centerX + radius * Math.cos(angle - Math.PI / 2); // Adjust angle for canvas coordinate system
 		const y = centerY + radius * Math.sin(angle - Math.PI / 2); // Adjust angle for canvas coordinate system
 
-		const bubbleSize = 20; // Minimum bubble size of 20px
+		const bubbleSize = 5; // Decrease the bubble size to make them smaller
 
 		// Calculate color intensity based on value, closer to 100% more red
 		const colorIntensity = Math.min(value / 100, 1);
