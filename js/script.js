@@ -2,6 +2,7 @@ $(document).ready(function () {
 	const $canvas = $(".canvas");
 	const $tooltip = $("#tooltip");
 	const $yearDisplay = $("#year-display");
+	const $monthsContainer = $("#months-container");
 	let year = $("#year").val();
 	let caseModel = $("#caseModel").val();
 
@@ -36,8 +37,70 @@ $(document).ready(function () {
 		return months;
 	}
 
+	// Create month labels
+	function createMonthLabels() {
+		const monthNames = [
+			"January",
+			"February",
+			"March",
+			"April",
+			"May",
+			"June",
+			"July",
+			"August",
+			"September",
+			"October",
+			"November",
+			"December",
+		];
+		$monthsContainer.empty();
+		monthNames.forEach((month, i) => {
+			const angle = ((i * 360) / 12 - 90) * (Math.PI / 180); // Angle for each month
+			const x = Math.cos(angle) * 300 + $canvas.width() / 2; // Adjusted radius for month labels
+			const y = Math.sin(angle) * 300 + $canvas.height() / 2;
+			$("<div></div>")
+				.addClass("month-label")
+				.css({
+					position: "absolute",
+					left: `${x}px`,
+					top: `${y}px`,
+					transform: `translate(-50%, -50%)`,
+				})
+				.text(month)
+				.appendTo($monthsContainer);
+		});
+	}
+
+	function drawGridLines() {
+		$canvas.empty();
+		const linesContainer = $("<div></div>")
+			.addClass("lines-container")
+			.css({ position: "absolute", width: "100%", height: "100%" });
+		for (let i = 0; i < 12; i++) {
+			const angle = ((i * 360) / 12 - 90) * (Math.PI / 180); // Angle for each line
+			const x1 = Math.cos(angle) * 50 + $canvas.width() / 2;
+			const y1 = Math.sin(angle) * 50 + $canvas.height() / 2;
+			const x2 = Math.cos(angle) * 300 + $canvas.width() / 2;
+			const y2 = Math.sin(angle) * 300 + $canvas.height() / 2;
+			$("<div></div>")
+				.addClass("grid-line")
+				.css({
+					position: "absolute",
+					border: "1px solid #444",
+					transformOrigin: "top left",
+					transform: `rotate(${angle + Math.PI / 2}rad)`,
+					top: `${$canvas.height() / 2}px`,
+					left: `${$canvas.width() / 2}px`,
+					width: "300px",
+				})
+				.appendTo(linesContainer);
+		}
+		linesContainer.appendTo($canvas);
+	}
+
 	function draw() {
 		$canvas.empty();
+		drawGridLines();
 
 		// Update year display
 		$yearDisplay.text(year);
@@ -54,12 +117,15 @@ $(document).ready(function () {
 		// Generate all months for the selected year
 		const months = generateMonths(year);
 
-		const totalCountries = Object.keys(countryColors).length;
-		const angleIncrement = 360 / (totalCountries * months.length); // Ensure full circle
+		const totalDots = months.length * Object.keys(countryColors).length;
+		const angleIncrement = 360 / 12; // Full circle divided by 12 months
+
+		const radiusIncrement = 5; // Fixed radius increment for spacing
+		const baseRadius = 20; // Starting radius
 
 		let index = 0;
-		Object.keys(countryColors).forEach((country) => {
-			months.forEach((month, i) => {
+		months.forEach((month, monthIndex) => {
+			Object.keys(countryColors).forEach((country) => {
 				const monthString = month
 					.toISOString()
 					.split("T")[0]
@@ -72,8 +138,10 @@ $(document).ready(function () {
 				const colorIntensity = Math.max(value / maxCaseValue, 0.5); // Ensuring minimum opacity for visibility
 				const color = countryColors[country] || "#888888"; // Default color for 'No Data'
 
-				let angle = (index * angleIncrement - 90) * (Math.PI / 180); // Adjust angle to start from top (12 o'clock)
-				let radius = 20 + 10 * Math.sqrt(index); // Adjusting radius for better spacing
+				let angle =
+					(monthIndex * angleIncrement - 90) * (Math.PI / 180); // Adjust angle to start from top (12 o'clock)
+				let radius = baseRadius + radiusIncrement * index; // Adjusting radius for 5px spacing
+
 				let x = Math.cos(angle) * radius + $canvas.width() / 2;
 				let y = Math.sin(angle) * radius + $canvas.height() / 2;
 
@@ -111,6 +179,8 @@ $(document).ready(function () {
 					top: e.pageY + 10 + "px",
 				});
 			});
+
+		createMonthLabels();
 	}
 
 	$("#year, #caseModel").on("input change", function () {
