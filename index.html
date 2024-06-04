@@ -3,82 +3,47 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Spiral Visualization</title>
 		<link rel="stylesheet" href="css/styles.css" />
-		<title>Snail Diagram</title>
-		<style>
-			#mainContainer {
-				width: 640px;
-				height: 480px;
-				margin: 0 auto;
-			}
-			#visualizationContainer {
-				width: 100%;
-				height: calc(
-					100% - 100px
-				); /* Adjusted height to accommodate control panel */
-				position: relative;
-			}
-			#heatmapContainer {
-				width: 100%;
-				height: 100%;
-				position: relative;
-			}
-			#heatmapCanvas {
-				width: 100%;
-				height: 100%;
-			}
-			.tooltip {
-				position: absolute;
-				background: #fff;
-				border: 1px solid #ccc;
-				padding: 5px;
-				display: none;
-			}
-			#controls {
-				display: flex;
-				flex-direction: column;
-				padding: 10px;
-				background: #f0f0f0;
-				border-bottom: 1px solid #ccc;
-			}
-		</style>
 	</head>
 	<body>
-		<div id="mainContainer">
-			<div id="controls">
-				<label for="countrySelector">Select Country:</label>
-				<select id="countrySelector"></select>
-				<label for="dataPointSelector">Select Data Type:</label>
-				<select id="dataPointSelector">
-					<option
-						value="Share of positive tests - All types of surveillance"
-					>
-						Share of positive tests - All types of surveillance
-					</option>
-				</select>
-				<label for="timeSlider">Select Year:</label>
-				<input
-					type="range"
-					id="timeSlider"
-					min="2000"
-					max="2020"
-					step="1"
-				/>
-				<span id="yearLabel">2000</span>
-			</div>
-			<div id="visualizationContainer">
-				<div id="heatmapContainer">
-					<canvas
-						id="heatmapCanvas"
-						width="640"
-						height="380"
-					></canvas>
-				</div>
-				<div id="tooltip" class="tooltip"></div>
-			</div>
+		<div class="controls">
+			<label for="caseModel">Case Model:</label>
+			<select id="caseModel">
+				<option value="Reported cases of influenza-like illnesses">
+					Influenza-like illnesses
+				</option>
+				<option value="Reported cases of acute respiratory infections">
+					Acute respiratory infections
+				</option>
+				<option
+					value="Reported cases of severe acute respiratory infections"
+				>
+					Severe acute respiratory infections
+				</option>
+				<option
+					value="Reported deaths caused by severe acute respiratory infections"
+				>
+					Deaths caused by severe acute respiratory infections
+				</option>
+				<!-- Add more options as needed -->
+			</select>
 		</div>
+		<div class="canvas"></div>
+		<div class="year-control">
+			<label for="year">Year:</label>
+			<input
+				type="range"
+				id="year"
+				name="year"
+				min="2009"
+				max="2024"
+				value="2009"
+			/>
+			<div id="year-display">2009</div>
+		</div>
+		<div class="tooltip" id="tooltip"></div>
 		<script src="lib/jquery-3.7.1.min.js"></script>
-		<script src="lib/gmynd.js"></script>
 		<script src="data/influenza.js"></script>
 		<script src="js/script.js"></script>
 	</body>

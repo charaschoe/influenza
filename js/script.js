@@ -1,131 +1,123 @@
-function drawSnailDiagram(data, selectedDataPoint) {
-	const canvas = document.getElementById("heatmapCanvas");
-	const ctx = canvas.getContext("2d");
-	ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-
-	const centerX = canvas.width / 2;
-	const centerY = canvas.height / 2;
-	const maxRadius = Math.min(canvas.width, canvas.height) / 2 - 20; // Adjusted to ensure it fits within the canvas
-	const totalDays = 366; // Total days in a year
-	const angleStep = (2 * Math.PI) / 365; // Full circle divided by the number of days
-	const radiusStep = 10; // Adjust radius step to create a tighter spiral
-
-	console.log(
-		"Drawing diagram with data:",
-		data,
-		"and data point:",
-		selectedDataPoint
-	);
-
-	data.forEach((d) => {
-		console.log("Processing data point:", d); // Log each data point
-
-		const date = new Date(d.Date);
-		const dayOfYear =
-			(date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24;
-		const value = parseFloat(d[selectedDataPoint]); // Ensure the value is a number
-
-		const radius = radiusStep * dayOfYear;
-		const angle = angleStep * dayOfYear;
-		const x = centerX + radius * Math.cos(angle - Math.PI / 2); // Adjust angle for canvas coordinate system
-		const y = centerY + radius * Math.sin(angle - Math.PI / 2); // Adjust angle for canvas coordinate system
-
-		const bubbleSize = 5; // Decrease the bubble size to make them smaller
-
-		// Calculate color intensity based on value, closer to 100% more red
-		const colorIntensity = Math.min(value / 100, 1);
-		const color = `rgba(255, 0, 0, ${colorIntensity})`;
-
-		ctx.beginPath();
-		ctx.arc(x, y, bubbleSize, 0, 2 * Math.PI);
-		ctx.fillStyle = color; // Set the color based on value
-		ctx.fill();
-		ctx.closePath();
-	});
-
-	$("#heatmapCanvas")
-		.off("mousemove")
-		.on("mousemove", function (e) {
-			const rect = canvas.getBoundingClientRect();
-			const mouseX = e.clientX - rect.left;
-			const mouseY = e.clientY - rect.top;
-			let tooltipText = "";
-
-			data.forEach((d) => {
-				const date = new Date(d.Date);
-				const dayOfYear =
-					(date - new Date(date.getFullYear(), 0, 0)) /
-					1000 /
-					60 /
-					60 /
-					24;
-				const value = parseFloat(d[selectedDataPoint]); // Ensure the value is a number
-
-				const radius = radiusStep * dayOfYear;
-				const angle = angleStep * dayOfYear;
-				const x = centerX + radius * Math.cos(angle - Math.PI / 2);
-				const y = centerY + radius * Math.sin(angle - Math.PI / 2);
-
-				const bubbleSize = 20; // Minimum bubble size of 20px
-
-				const distance = Math.sqrt(
-					(mouseX - x) ** 2 + (mouseY - y) ** 2
-				);
-				if (distance < bubbleSize) {
-					tooltipText = `Value: ${value}`;
-				}
-			});
-
-			if (tooltipText) {
-				$("#tooltip")
-					.text(tooltipText)
-					.show()
-					.css({
-						left: e.pageX + 10,
-						top: e.pageY + 10,
-					});
-			} else {
-				$("#tooltip").hide();
-			}
-		});
-}
-
-function populateCountrySelector(data) {
-	const countries = [...new Set(data.map((d) => d.Country))].sort();
-	const countrySelector = $("#countrySelector");
-	countries.forEach((country) => {
-		countrySelector.append(new Option(country, country));
-	});
-}
-
 $(document).ready(function () {
-	// Assuming 'data' is a global variable defined in 'influenza.js'
-	console.log("Data loaded:", data); // Debugging statement to check the loaded data
+	const $canvas = $(".canvas");
+	const $tooltip = $("#tooltip");
+	const $yearDisplay = $("#year-display");
+	let year = $("#year").val();
+	let caseModel = $("#caseModel").val();
 
-	populateCountrySelector(data);
-
-	const timeSlider = $("#timeSlider");
-	const yearLabel = $("#yearLabel");
-	const dataPointSelector = $("#dataPointSelector");
-
-	function updateHeatmap() {
-		const selectedCountry = $("#countrySelector").val();
-		const selectedYear = timeSlider.val();
-		const selectedDataPoint = dataPointSelector.val();
-		yearLabel.text(selectedYear);
-		const filteredData = data.filter(
-			(d) =>
-				d.Country === selectedCountry &&
-				new Date(d.Date).getFullYear() == selectedYear
-		);
-		console.log("Filtered data:", filteredData); // Debugging statement to check the filtered data
-		drawSnailDiagram(filteredData, selectedDataPoint);
+	// Generate random colors for each country and store them in a persistent map
+	const countryColors = {};
+	function getRandomColor() {
+		const letters = "0123456789ABCDEF";
+		let color = "#";
+		for (let i = 0; i < 6; i++) {
+			color += letters[Math.floor(Math.random() * 16)];
+		}
+		return color;
 	}
 
-	$("#countrySelector").change(updateHeatmap);
-	timeSlider.on("input", updateHeatmap);
-	dataPointSelector.change(updateHeatmap);
+	function assignColorsToCountries(data) {
+		data.forEach((record) => {
+			if (!countryColors[record.Country]) {
+				countryColors[record.Country] = getRandomColor();
+			}
+		});
+	}
 
-	// Trigger initial drawing
-	$("#countrySelector").trigger("change");
+	// Initialize country colors using the entire dataset once
+	assignColorsToCountries(data);
+
+	// Generate all months in a given year
+	function generateMonths(year) {
+		const months = [];
+		for (let month = 0; month < 12; month++) {
+			months.push(new Date(year, month, 1));
+		}
+		return months;
+	}
+
+	function draw() {
+		$canvas.empty();
+
+		// Update year display
+		$yearDisplay.text(year);
+
+		// Filter data for the selected year and sort by date
+		const filteredData = data
+			.filter((d) => new Date(d.Date).getFullYear() == year)
+			.sort((a, b) => new Date(a.Date) - new Date(b.Date));
+
+		const maxCaseValue = Math.max(
+			...filteredData.map((d) => d[caseModel] || 0)
+		);
+
+		// Generate all months for the selected year
+		const months = generateMonths(year);
+
+		const totalCountries = Object.keys(countryColors).length;
+		const angleIncrement = 360 / (totalCountries * months.length); // Ensure full circle
+
+		let index = 0;
+		Object.keys(countryColors).forEach((country) => {
+			months.forEach((month, i) => {
+				const monthString = month
+					.toISOString()
+					.split("T")[0]
+					.slice(0, 7);
+				const monthData = filteredData.find(
+					(d) =>
+						d.Date.startsWith(monthString) && d.Country === country
+				) || { Country: "No Data", Date: monthString, [caseModel]: 0 };
+				const value = monthData[caseModel] || 0;
+				const colorIntensity = Math.max(value / maxCaseValue, 0.5); // Ensuring minimum opacity for visibility
+				const color = countryColors[country] || "#888888"; // Default color for 'No Data'
+
+				let angle = (index * angleIncrement - 90) * (Math.PI / 180); // Adjust angle to start from top (12 o'clock)
+				let radius = 20 + 10 * Math.sqrt(index); // Adjusting radius for better spacing
+				let x = Math.cos(angle) * radius + $canvas.width() / 2;
+				let y = Math.sin(angle) * radius + $canvas.height() / 2;
+
+				$("<div></div>")
+					.addClass("dot")
+					.css({
+						width: "10px",
+						height: "10px",
+						backgroundColor: color,
+						left: `${x}px`,
+						top: `${y}px`,
+						opacity: colorIntensity,
+						border: `1px solid ${color}`, // Adding a border for better visibility
+					})
+					.attr("data-country", country)
+					.attr("data-month", monthString)
+					.appendTo($canvas);
+
+				index++;
+			});
+		});
+
+		$(".dot")
+			.on("mouseenter", function () {
+				const country = $(this).data("country");
+				const month = $(this).data("month");
+				$tooltip.text(`${country}, ${month}`).show();
+			})
+			.on("mouseleave", function () {
+				$tooltip.hide();
+			})
+			.on("mousemove", function (e) {
+				$tooltip.css({
+					left: e.pageX + 10 + "px",
+					top: e.pageY + 10 + "px",
+				});
+			});
+	}
+
+	$("#year, #caseModel").on("input change", function () {
+		year = $("#year").val();
+		caseModel = $("#caseModel").val();
+		draw();
+	});
+
+	draw();
 });
