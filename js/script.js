@@ -55,7 +55,7 @@ $(document).ready(function () {
 		];
 		$monthsContainer.empty();
 		monthNames.forEach((month, i) => {
-			const angle = ((i * 360) / 12 - 90) * (Math.PI / 180); // Angle for each month
+			const angle = (((i + 0.5) * 360) / 12 - 90) * (Math.PI / 180); // Angle for each month label
 			const x = Math.cos(angle) * 350 + $canvas.width() / 2; // Adjusted radius for month labels
 			const y = Math.sin(angle) * 350 + $canvas.height() / 2;
 			$("<div></div>")
