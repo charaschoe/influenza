@@ -1,32 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spiral Visualization</title>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-    <div class="controls">
-        <label for="caseModel">Case Model:</label>
-        <select id="caseModel">
-            <option value="Reported cases of influenza-like illnesses">Influenza-like illnesses</option>
-            <option value="Reported cases of acute respiratory infections">Acute respiratory infections</option>
-            <option value="Reported cases of severe acute respiratory infections">Severe acute respiratory infections</option>
-            <option value="Reported deaths caused by severe acute respiratory infections">Deaths caused by severe acute respiratory infections</option>
-            <!-- Add more options as needed -->
-        </select>
-    </div>
-    <div id="months-container" style="position: relative;"></div>
-    <div class="canvas"></div>
-    <div class="year-control">
-        <label for="year">Year:</label>
-        <input type="range" id="year" name="year" min="2009" max="2024" value="2009">
-        <div id="year-display">2009</div>
-    </div>
-    <div class="tooltip" id="tooltip"></div>
-    <script src="lib/jquery-3.7.1.min.js"></script>
-    <script src="data/influenza.js"></script>
-    <script src="js/script.js"></script>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Spiral Visualization</title>
+		<link rel="stylesheet" href="css/styles.css" />
+	</head>
+	<body>
+		<div class="controls">
+			<label for="caseModel">Case Model:</label>
+			<select id="caseModel">
+				<option value="Reported cases of influenza-like illnesses">
+					Influenza-like illnesses
+				</option>
+				<option value="Reported cases of acute respiratory infections">
+					Acute respiratory infections
+				</option>
+				<option
+					value="Reported cases of severe acute respiratory infections"
+				>
+					Severe acute respiratory infections
+				</option>
+				<option
+					value="Reported deaths caused by severe acute respiratory infections"
+				>
+					Deaths caused by severe acute respiratory infections
+				</option>
+				<!-- Add more options as needed -->
+			</select>
+		</div>
+		<div id="months-container" style="position: relative"></div>
+		<div class="canvas" id="canvas"></div>
+		<div class="year-control">
+			<label for="year">Year:</label>
+			<input
+				type="range"
+				id="year"
+				name="year"
+				min="2009"
+				max="2024"
+				value="2009"
+			/>
+			<div id="year-display">2009</div>
+		</div>
+		<div class="tooltip" id="tooltip"></div>
+		<script src="lib/jquery-3.7.1.min.js"></script>
+		<script src="data/influenza.js"></script>
+		<script src="js/script.js"></script>
+	</body>
 </html>

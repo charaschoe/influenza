@@ -56,8 +56,8 @@ $(document).ready(function () {
 		$monthsContainer.empty();
 		monthNames.forEach((month, i) => {
 			const angle = ((i * 360) / 12 - 90) * (Math.PI / 180); // Angle for each month
-			const x = Math.cos(angle) * 300 + $canvas.width() / 2; // Adjusted radius for month labels
-			const y = Math.sin(angle) * 300 + $canvas.height() / 2;
+			const x = Math.cos(angle) * 350 + $canvas.width() / 2; // Adjusted radius for month labels
+			const y = Math.sin(angle) * 350 + $canvas.height() / 2;
 			$("<div></div>")
 				.addClass("month-label")
 				.css({
@@ -72,7 +72,6 @@ $(document).ready(function () {
 	}
 
 	function drawGridLines() {
-		$canvas.empty();
 		const linesContainer = $("<div></div>")
 			.addClass("lines-container")
 			.css({ position: "absolute", width: "100%", height: "100%" });
@@ -118,13 +117,13 @@ $(document).ready(function () {
 		const months = generateMonths(year);
 
 		const totalDots = months.length * Object.keys(countryColors).length;
-		const angleIncrement = 360 / 12; // Full circle divided by 12 months
-
 		const radiusIncrement = 5; // Fixed radius increment for spacing
-		const baseRadius = 20; // Starting radius
+		const baseRadius = 30; // Starting radius
 
 		let index = 0;
 		months.forEach((month, monthIndex) => {
+			const angleStart = ((monthIndex * 360) / 12 - 90) * (Math.PI / 180); // Starting angle for each month
+
 			Object.keys(countryColors).forEach((country) => {
 				const monthString = month
 					.toISOString()
@@ -138,8 +137,7 @@ $(document).ready(function () {
 				const colorIntensity = Math.max(value / maxCaseValue, 0.5); // Ensuring minimum opacity for visibility
 				const color = countryColors[country] || "#888888"; // Default color for 'No Data'
 
-				let angle =
-					(monthIndex * angleIncrement - 90) * (Math.PI / 180); // Adjust angle to start from top (12 o'clock)
+				let angle = angleStart; // Fixed angle for each month
 				let radius = baseRadius + radiusIncrement * index; // Adjusting radius for 5px spacing
 
 				let x = Math.cos(angle) * radius + $canvas.width() / 2;

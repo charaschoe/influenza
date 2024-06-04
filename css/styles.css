@@ -54,9 +54,12 @@ body {
 }
 
 .canvas {
-	position: relative;
+	position: absolute;
 	width: 100%;
 	height: 80%;
+	top: 10%;
+	left: 50%;
+	transform: translateX(-50%);
 }
 
 .dot {
