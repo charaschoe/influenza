@@ -65,6 +65,10 @@ $(document).ready(function () {
 					left: `${x}px`,
 					top: `${y}px`,
 					transform: `translate(-50%, -50%)`,
+					fontFamily: "Arial, sans-serif",
+					textTransform: "uppercase",
+					fontSize: "1.2em",
+					color: "white",
 				})
 				.text(month)
 				.appendTo($monthsContainer);
@@ -156,6 +160,7 @@ $(document).ready(function () {
 					})
 					.attr("data-country", country)
 					.attr("data-month", monthString)
+					.attr("data-value", value)
 					.appendTo($canvas);
 
 				index++;
@@ -166,7 +171,12 @@ $(document).ready(function () {
 			.on("mouseenter", function () {
 				const country = $(this).data("country");
 				const month = $(this).data("month");
-				$tooltip.text(`${country}, ${month}`).show();
+				const value = $(this).data("value");
+				$tooltip
+					.html(
+						`<strong>${country}</strong><br>${month}<br>${caseModel}: ${value}`
+					)
+					.show();
 			})
 			.on("mouseleave", function () {
 				$tooltip.hide();
