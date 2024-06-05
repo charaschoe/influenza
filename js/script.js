@@ -122,13 +122,13 @@ $(document).ready(function () {
 
 		const totalDots = months.length * Object.keys(countryColors).length;
 		const radiusIncrement = 5; // Fixed radius increment for spacing
-		const baseRadius = 30; // Starting radius
+		const baseRadius = 100; // Starting radius
 
 		let index = 0;
 		months.forEach((month, monthIndex) => {
 			const angleStart = ((monthIndex * 360) / 12 - 90) * (Math.PI / 180); // Starting angle for each month
 
-			Object.keys(countryColors).forEach((country) => {
+			Object.keys(countryColors).forEach((country, countryIndex) => {
 				const monthString = month
 					.toISOString()
 					.split("T")[0]
@@ -142,7 +142,12 @@ $(document).ready(function () {
 				const color = countryColors[country] || "#888888"; // Default color for 'No Data'
 
 				let angle = angleStart; // Fixed angle for each month
-				let radius = baseRadius + radiusIncrement * index; // Adjusting radius for 5px spacing
+				// let radius = baseRadius + radiusIncrement * index; // Adjusting radius for 5px spacing
+
+				let angleDeg = gmynd.degrees(angle);
+				angle = gmynd.radians(angleDeg + (360 / 12 / 6) * countryIndex);
+
+				let radius = baseRadius + radiusIncrement * index;
 
 				let x = Math.cos(angle) * radius + $canvas.width() / 2;
 				let y = Math.sin(angle) * radius + $canvas.height() / 2;
