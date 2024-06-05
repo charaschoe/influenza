@@ -6,23 +6,23 @@ $(document).ready(function () {
 	let year = $("#year").val();
 	let caseModel = $("#caseModel").val();
 
-    // Generate consistent pastel colors for each country and store them in a persistent map
-    const countryColors = {};
+	// Generate consistent pastel colors for each country and store them in a persistent map
+	const countryColors = {};
 
-    function assignColorsToCountries(data) {
-        const countries = [...new Set(data.map(record => record.Country))];
-        const colorCount = countries.length;
-        const hueIncrement = 360 / colorCount;
-        let hue = 0;
+	function assignColorsToCountries(data) {
+		const countries = [...new Set(data.map((record) => record.Country))];
+		const colorCount = countries.length;
+		const hueIncrement = 360 / colorCount;
+		let hue = 0;
 
-        countries.forEach(country => {
-            const saturation = 70;
-            const lightness = 80;
-            const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-            countryColors[country] = color;
-            hue += hueIncrement;
-        });
-    }
+		countries.forEach((country) => {
+			const saturation = 70;
+			const lightness = 80;
+			const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+			countryColors[country] = color;
+			hue += hueIncrement;
+		});
+	}
 
 	// Initialize country colors using the entire dataset once
 	assignColorsToCountries(data);
@@ -55,8 +55,8 @@ $(document).ready(function () {
 		$monthsContainer.empty();
 		monthNames.forEach((month, i) => {
 			const angle = (((i + 0.5) * 360) / 12 - 90) * (Math.PI / 180); // Angle for each month label
-			const x = Math.cos(angle) * 350 + $canvas.width() / 2; // Adjusted radius for month labels
-			const y = Math.sin(angle) * 350 + $canvas.height() / 2;
+			const x = Math.cos(angle) * 300 + $canvas.width() / 2; // Adjusted radius for month labels
+			const y = Math.sin(angle) * 300 + $canvas.height() / 2;
 			$("<div></div>")
 				.addClass("month-label")
 				.css({
@@ -74,31 +74,31 @@ $(document).ready(function () {
 		});
 	}
 
-	function drawGridLines() {
-		const linesContainer = $("<div></div>")
-			.addClass("lines-container")
-			.css({ position: "absolute", width: "100%", height: "100%" });
-		for (let i = 0; i < 12; i++) {
-			const angle = ((i * 360) / 12 - 90) * (Math.PI / 180); // Angle for each line
-			const x1 = Math.cos(angle) * 50 + $canvas.width() / 2;
-			const y1 = Math.sin(angle) * 50 + $canvas.height() / 2;
-			const x2 = Math.cos(angle) * 300 + $canvas.width() / 2;
-			const y2 = Math.sin(angle) * 300 + $canvas.height() / 2;
-			$("<div></div>")
-				.addClass("grid-line")
-				.css({
-					position: "absolute",
-					border: "1px solid #444",
-					transformOrigin: "top left",
-					transform: `rotate(${angle + Math.PI / 2}rad)`,
-					top: `${$canvas.height() / 2}px`,
-					left: `${$canvas.width() / 2}px`,
-					width: "300px",
-				})
-				.appendTo(linesContainer);
-		}
-		linesContainer.appendTo($canvas);
-	}
+    function drawGridLines() {
+        const linesContainer = $("<div></div>")
+            .addClass("lines-container")
+            .css({ position: "absolute", width: "100%", height: "100%" });
+        for (let i = 0; i < 12; i++) {
+            const angle = ((i * 360) / 12 - 90) * (Math.PI / 180); // Angle for each line
+            const x1 = Math.cos(angle) * 50 + $canvas.width() / 2;
+            const y1 = Math.sin(angle) * 50 + $canvas.height() / 2;
+            const x2 = Math.cos(angle) * 375 + $canvas.width() / 2; // Increase the length by 25%
+            const y2 = Math.sin(angle) * 375 + $canvas.height() / 2; // Increase the length by 25%
+            $("<div></div>")
+                .addClass("grid-line")
+                .css({
+                    position: "absolute",
+                    border: "1px solid #444",
+                    transformOrigin: "top left",
+                    transform: `rotate(${angle + Math.PI / 2}rad)`,
+                    top: `${$canvas.height() / 2}px`,
+                    left: `${$canvas.width() / 2}px`,
+                    width: "375px", // Increase the width by 25%
+                })
+                .appendTo(linesContainer);
+        }
+        linesContainer.appendTo($canvas);
+    }
 
 	function draw() {
 		$canvas.empty();
@@ -121,7 +121,7 @@ $(document).ready(function () {
 
 		const totalDots = months.length * Object.keys(countryColors).length;
 		const radiusIncrement = 5; // Fixed radius increment for spacing
-		const baseRadius = 100; // Starting radius
+		const baseRadius = 20; // Starting radius
 
 		let index = 0;
 		months.forEach((month, monthIndex) => {
