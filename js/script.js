@@ -6,24 +6,23 @@ $(document).ready(function () {
 	let year = $("#year").val();
 	let caseModel = $("#caseModel").val();
 
-	// Generate random colors for each country and store them in a persistent map
-	const countryColors = {};
-	function getRandomColor() {
-		const letters = "0123456789ABCDEF";
-		let color = "#";
-		for (let i = 0; i < 6; i++) {
-			color += letters[Math.floor(Math.random() * 16)];
-		}
-		return color;
-	}
+    // Generate consistent pastel colors for each country and store them in a persistent map
+    const countryColors = {};
 
-	function assignColorsToCountries(data) {
-		data.forEach((record) => {
-			if (!countryColors[record.Country]) {
-				countryColors[record.Country] = getRandomColor();
-			}
-		});
-	}
+    function assignColorsToCountries(data) {
+        const countries = [...new Set(data.map(record => record.Country))];
+        const colorCount = countries.length;
+        const hueIncrement = 360 / colorCount;
+        let hue = 0;
+
+        countries.forEach(country => {
+            const saturation = 70;
+            const lightness = 80;
+            const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+            countryColors[country] = color;
+            hue += hueIncrement;
+        });
+    }
 
 	// Initialize country colors using the entire dataset once
 	assignColorsToCountries(data);
