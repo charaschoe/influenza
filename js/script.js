@@ -8,6 +8,14 @@ $(document).ready(function () {
 	let year = $("#year").val();
 	let caseModel = $(".case-model-option:first").data("value");
 
+	// Event listener for case model selection
+	$(".case-model-option").on("click", function () {
+		$(".case-model-option").removeClass("selected");
+		$(this).addClass("selected");
+		caseModel = $(this).data("value");
+		draw(); // Redraw the visualization with the new case model
+	});
+
 	// Generate consistent pastel colors for each country and store them in a persistent map
 	const countryColors = {
 		Japan: "#FF4C4C", // Sunset Orange
@@ -60,7 +68,7 @@ $(document).ready(function () {
 			const angle = (((i + 0.5) * 360) / 12 - 90) * (Math.PI / 180); // Angle for each month label
 			const x = Math.cos(angle) * 300 + $canvas.width() / 2; // Adjusted radius for month labels
 			const y = Math.sin(angle) * 300 + $canvas.height() / 2;
-			$("<div></div>")
+			$("<div>")
 				.addClass("month-label")
 				.css({
 					position: "absolute",
@@ -78,7 +86,7 @@ $(document).ready(function () {
 	}
 
 	function drawGridLines() {
-		const linesContainer = $("<div></div>")
+		const linesContainer = $("<div>")
 			.addClass("lines-container")
 			.css({ position: "absolute", width: "100%", height: "100%" });
 		for (let i = 0; i < 12; i++) {
@@ -87,7 +95,7 @@ $(document).ready(function () {
 			const y1 = Math.sin(angle) * 50 + $canvas.height() / 2;
 			const x2 = Math.cos(angle) * 375 + $canvas.width() / 2; // Increase the length by 25%
 			const y2 = Math.sin(angle) * 375 + $canvas.height() / 2; // Increase the length by 25%
-			$("<div></div>")
+			$("<div>")
 				.addClass("grid-line")
 				.css({
 					position: "absolute",
@@ -106,19 +114,15 @@ $(document).ready(function () {
 	function draw() {
 		$canvas.empty();
 		drawGridLines();
-
 		// Update year display
 		$yearDisplay.text(year);
-
 		// Filter data for the selected year and sort by date
 		const filteredData = data
 			.filter((d) => new Date(d.Date).getFullYear() == year)
 			.sort((a, b) => new Date(a.Date) - new Date(b.Date));
-
 		const maxCaseValue = Math.max(
 			...filteredData.map((d) => d[caseModel] || 0)
 		);
-
 		// Generate all months for the selected year
 		// const months = generateMonths(year);
 
@@ -127,15 +131,12 @@ $(document).ready(function () {
 			let month = generateMonths(i);
 			months = months.concat(month);
 		}
-
 		const totalDots = months.length * Object.keys(countryColors).length;
 		const radiusIncrement = 20 / 72; // Fixed radius increment for spacing (30px per full circle; 6 countries * 12 month = 72 dots)
 		const baseRadius = 150; // Starting radius
-
 		let index = 0;
 		months.forEach((month, monthIndex) => {
 			const angleStart = ((monthIndex * 360) / 12 - 90) * (Math.PI / 180); // Starting angle for each month
-
 			Object.keys(countryColors).forEach((country, countryIndex) => {
 				const monthString = month
 					.toISOString()
@@ -146,22 +147,15 @@ $(document).ready(function () {
 						d.Date.startsWith(monthString) && d.Country === country
 				) || { Country: "No Data", Date: monthString, [caseModel]: 0 };
 				const value = monthData[caseModel] || 0;
-				const colorIntensity =
-					value > 0 ? Math.max(value / maxCaseValue, 0.5) : 0.5; // Ensuring minimum opacity for visibility
+				const colorIntensity = Math.max(value / maxCaseValue, 0.5); // Ensuring minimum opacity for visibility
 				const color = countryColors[country] || "#888888"; // Default color for 'No Data'
-
 				let angle = angleStart; // Fixed angle for each month
-				// let radius = baseRadius + radiusIncrement * index; // Adjusting radius for 5px spacing
-
+				let radius = baseRadius + radiusIncrement * index; // Adjusting radius for 5px spacing
 				let angleDeg = gmynd.degrees(angle);
 				angle = gmynd.radians(angleDeg + (360 / 12 / 6) * countryIndex);
-
-				let radius = baseRadius + radiusIncrement * index;
-
 				let x = Math.cos(angle) * radius + $canvas.width() / 2;
 				let y = Math.sin(angle) * radius + $canvas.height() / 2;
-
-				$("<div></div>")
+				$("<div>")
 					.addClass("dot")
 					.css({
 						width: "10px",
@@ -176,19 +170,15 @@ $(document).ready(function () {
 					.attr("data-month", monthString)
 					.attr("data-value", value)
 					.appendTo($canvas);
-
 				index++;
 			});
 		});
-
-		$(".dot")
-			.on("mouseenter", function () {
-				const country = $(this).data("country");
-				const month = $(this).data("month");
-				const value = $(this).data("value");
-				$tooltip
-					.html(
-						`<strong>${country}</strong><br>${month}<br>${caseModel}: ${value}`
+		$(".dot").on("mouseenter", function () {
+			const country = $(this).data("country");
+			const month = $(this).data("month");
+			const value = $(this).data("value");
+			$tooltip.html(
+				`<strong>${country}</strong><br>${month}<br>${caseModel}: ${value}`
 					)
 					.show();
 			})
