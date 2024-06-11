@@ -146,7 +146,8 @@ $(document).ready(function () {
 						d.Date.startsWith(monthString) && d.Country === country
 				) || { Country: "No Data", Date: monthString, [caseModel]: 0 };
 				const value = monthData[caseModel] || 0;
-				const colorIntensity = Math.max(value / maxCaseValue, 0.5); // Ensuring minimum opacity for visibility
+				const colorIntensity =
+					value > 0 ? Math.max(value / maxCaseValue, 0.5) : 0.5; // Ensuring minimum opacity for visibility
 				const color = countryColors[country] || "#888888"; // Default color for 'No Data'
 
 				let angle = angleStart; // Fixed angle for each month
