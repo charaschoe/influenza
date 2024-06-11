@@ -1,10 +1,12 @@
 $(document).ready(function () {
 	const $canvas = $(".canvas");
-	const $tooltip = $("#tooltip");
+	const $tooltip = $("<div class='info-box' id='info-box'></div>").appendTo(
+		"body"
+	);
 	const $yearDisplay = $("#year-display");
 	const $monthsContainer = $("#months-container");
 	let year = $("#year").val();
-	let caseModel = $("#caseModel").val();
+	let caseModel = $(".case-model-option:first").data("value");
 
 	// Generate consistent pastel colors for each country and store them in a persistent map
 	const countryColors = {
@@ -191,20 +193,20 @@ $(document).ready(function () {
 			})
 			.on("mouseleave", function () {
 				$tooltip.hide();
-			})
-			.on("mousemove", function (e) {
-				$tooltip.css({
-					left: e.pageX + 10 + "px",
-					top: e.pageY + 10 + "px",
-				});
 			});
 
 		createMonthLabels();
 	}
 
-	$("#year, #caseModel").on("input change", function () {
+	$("#year").on("input change", function () {
 		year = $("#year").val();
-		caseModel = $("#caseModel").val();
+		draw();
+	});
+
+	$(".case-model-option").on("click", function () {
+		$(".case-model-option").removeClass("selected");
+		$(this).addClass("selected");
+		caseModel = $(this).data("value");
 		draw();
 	});
 

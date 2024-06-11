@@ -12,26 +12,32 @@
 			<p>interactive data visualization by Jonas Wienberg</p>
 		</div>
 		<div class="controls">
-			<label for="caseModel">Case Model:</label>
-			<select id="caseModel">
-				<option value="Reported cases of influenza-like illnesses">
-					Influenza-like illnesses
-				</option>
-				<option value="Reported cases of acute respiratory infections">
-					Acute respiratory infections
-				</option>
-				<option
-					value="Reported cases of severe acute respiratory infections"
-				>
-					Severe acute respiratory infections
-				</option>
-				<option
-					value="Reported deaths caused by severe acute respiratory infections"
-				>
-					Deaths caused by severe acute respiratory infections
-				</option>
-				<!-- Add more options as needed -->
-			</select>
+			<label>Case Model:</label>
+			<div
+				class="case-model-option"
+				data-value="Reported cases of influenza-like illnesses"
+			>
+				Influenza-like illnesses
+			</div>
+			<div
+				class="case-model-option"
+				data-value="Reported cases of acute respiratory infections"
+			>
+				Acute respiratory infections
+			</div>
+			<div
+				class="case-model-option"
+				data-value="Reported cases of severe acute respiratory infections"
+			>
+				Severe acute respiratory infections
+			</div>
+			<div
+				class="case-model-option"
+				data-value="Reported deaths caused by severe acute respiratory infections"
+			>
+				Deaths caused by severe acute respiratory infections
+			</div>
+			<!-- Add more options as needed -->
 		</div>
 		<div id="months-container" style="position: relative"></div>
 		<div class="canvas" id="canvas"></div>
@@ -48,6 +54,7 @@
 			<div id="year-display">2009</div>
 		</div>
 		<div class="tooltip" id="tooltip"></div>
+		<div class="info-box" id="info-box"></div>
 		<script src="lib/jquery-3.7.1.min.js"></script>
 		<script src="lib/gmynd.js"></script>
 		<script src="data/influenza.js"></script>
