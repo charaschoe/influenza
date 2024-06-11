@@ -13,7 +13,7 @@ $(document).ready(function () {
 		const countries = [...new Set(data.map((record) => record.Country))];
 		const colorCount = countries.length;
 		const hueIncrement = 360 / colorCount;
-		let hue = 0;
+		let hue = 10;
 
 		countries.forEach((country) => {
 			const saturation = 80;
