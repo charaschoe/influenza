@@ -1,8 +1,6 @@
 $(document).ready(function () {
 	const $canvas = $(".canvas");
-	const $tooltip = $("<div class='info-box' id='info-box'></div>").appendTo(
-		"body"
-	);
+	const $tooltip = $("<div>").appendTo("body");
 	const $yearDisplay = $("#year-display");
 	const $monthsContainer = $("#months-container");
 	let year = $("#year").val();
@@ -70,20 +68,14 @@ $(document).ready(function () {
 			const y = Math.sin(angle) * 300 + $canvas.height() / 2;
 			$("<div>")
 				.addClass("month-label")
-				.css({
-					position: "absolute",
-					left: `${x}px`,
-					top: `${y}px`,
-					transform: `translate(-50%, -50%)`,
-					fontFamily: "Arial, sans-serif",
-					textTransform: "uppercase",
-					fontSize: "1.2em",
-					color: "white",
-				})
 				.text(month)
+				.css({ left: x, top: y })
 				.appendTo($monthsContainer);
 		});
 	}
+
+	// Initial call to create month labels
+	createMonthLabels();
 
 	function drawGridLines() {
 		const linesContainer = $("<div>")
@@ -173,12 +165,14 @@ $(document).ready(function () {
 				index++;
 			});
 		});
-		$(".dot").on("mouseenter", function () {
-			const country = $(this).data("country");
-			const month = $(this).data("month");
-			const value = $(this).data("value");
-			$tooltip.html(
-				`<strong>${country}</strong><br>${month}<br>${caseModel}: ${value}`
+		$(".dot")
+			.on("mouseenter", function () {
+				const country = $(this).data("country");
+				const month = $(this).data("month");
+				const value = $(this).data("value");
+				$tooltip
+					.html(
+						`<strong>${country}</strong><br>${month}<br>${caseModel}: ${value}`
 					)
 					.show();
 			})
