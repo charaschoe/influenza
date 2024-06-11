@@ -62,9 +62,9 @@ $(document).ready(function () {
 			"December",
 		];
 		$monthsContainer.empty();
+		const radius = 400; // Adjusted radius for month labels to be at the outer edge
 		monthNames.forEach((month, i) => {
-			const angle = (((i + 0.5) * 360) / 12 - 90) * (Math.PI / 180); // Angle for each month label
-			const radius = 400; // Adjusted radius for month labels to be at the outer edge
+			const angle = (i * 30 - 90) * (Math.PI / 180); // Angle for each month label
 			const x = Math.cos(angle) * radius + $canvas.width() / 2; // Adjusted radius for month labels
 			const y = Math.sin(angle) * radius + $canvas.height() / 2;
 			$("<div>")
@@ -73,8 +73,8 @@ $(document).ready(function () {
 				.css({
 					left: `${x}px`,
 					top: `${y}px`,
-					transform: "translate(-50%, -50%)",
-				}) // Center the labels
+					transform: "translate(-50%, -50%)", // Center the labels
+				})
 				.appendTo($monthsContainer);
 		});
 	}
