@@ -7,20 +7,21 @@ $(document).ready(function () {
 	let caseModel = $("#caseModel").val();
 
 	// Generate consistent pastel colors for each country and store them in a persistent map
-	const countryColors = {};
+	const countryColors = {
+		Japan: "#FF4C4C", // Sunset Orange
+		"North Korea": "#36CFC9", // Turquoise
+		Germany: "#FFEC3D", // Gorse
+		Iceland: "#9254DE", // Medium Purple
+		"United Arab Emirates": "#69C0FF", // Malibu
+		Iran: "#FF9C6E", // Atomic Tangerine
+	};
 
 	function assignColorsToCountries(data) {
 		const countries = [...new Set(data.map((record) => record.Country))];
-		const colorCount = countries.length;
-		const hueIncrement = 360 / colorCount;
-		let hue = 10;
-
 		countries.forEach((country) => {
-			const saturation = 80;
-			const lightness = 75;
-			const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-			countryColors[country] = color;
-			hue += hueIncrement;
+			if (!countryColors[country]) {
+				countryColors[country] = "#888888"; // Default color if not assigned
+			}
 		});
 	}
 
