@@ -9,8 +9,23 @@
 	<body>
 		<div class="header">
 			<h1>INFLUENZA</h1>
-			<p>interactive data visualization by Jonas Wienberg</p>
+			<p>Interactive data visualization by Jonas Wienberg</p>
 		</div>
+		<div id="months-container"></div>
+		<div class="canvas" id="canvas"></div>
+		<div class="year-control">
+			<label for="year">Year:</label>
+			<input
+				type="range"
+				id="year"
+				name="year"
+				min="2009"
+				max="2024"
+				value="2009"
+			/>
+			<div id="year-display">2009</div>
+		</div>
+
 		<div class="controls">
 			<div
 				class="case-model-option"
@@ -54,20 +69,6 @@
 			>
 				Positive Test Share
 			</div>
-		</div>
-		<div id="months-container" style="position: relative"></div>
-		<div class="canvas" id="canvas"></div>
-		<div class="year-control">
-			<label for="year">Year:</label>
-			<input
-				type="range"
-				id="year"
-				name="year"
-				min="2009"
-				max="2024"
-				value="2009"
-			/>
-			<div id="year-display">2009</div>
 		</div>
 		<div class="tooltip" id="tooltip"></div>
 		<div class="info-box" id="info-box"></div>

@@ -64,23 +64,23 @@ body {
 }
 
 #months-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
 }
 
 .month-label {
-    font-size: 1.2em;
-    color: white;
-    text-transform: uppercase;
-    pointer-events: none;
-    font-family: Arial, sans-serif;
-    position: absolute; /* Ensure the labels are positioned absolutely */
+	font-size: 1.2em;
+	color: white;
+	text-transform: uppercase;
+	pointer-events: none;
+	font-family: Arial, sans-serif;
+	position: absolute; /* Ensure the labels are positioned absolutely */
 }
 
-
-.canvas {
+.canvas,
+#months-container {
 	position: absolute;
 	width: calc(
 		100% - 60px
