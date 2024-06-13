@@ -117,9 +117,10 @@ $(document).ready(function () {
 		const filteredData = data
 			.filter((d) => new Date(d.Date).getFullYear() == year)
 			.sort((a, b) => new Date(a.Date) - new Date(b.Date));
-		const maxCaseValue = Math.max(
-			...filteredData.map((d) => d[caseModel] || 0)
-		);
+		const maxCaseValue = Math.max(...data.map((d) => d[caseModel] || 0));
+		console.log(caseModel);
+		console.log(maxCaseValue);
+
 		// Generate all months for the selected year
 		// const months = generateMonths(year);
 
@@ -139,12 +140,12 @@ $(document).ready(function () {
 					.toISOString()
 					.split("T")[0]
 					.slice(0, 7);
-				const monthData = filteredData.find(
+				const monthData = data.find(
 					(d) =>
 						d.Date.startsWith(monthString) && d.Country === country
 				) || { Country: "No Data", Date: monthString, [caseModel]: 0 };
 				const value = monthData[caseModel] || 0;
-				const colorIntensity = Math.max(value / maxCaseValue, 0.5); // Ensuring minimum opacity for visibility
+				const colorIntensity = Math.max(value / maxCaseValue, 0.0); // Ensuring minimum opacity for visibility
 				const color = countryColors[country] || "#888888"; // Default color for 'No Data'
 				let angle = angleStart; // Fixed angle for each month
 				let radius = baseRadius + radiusIncrement * index; // Adjusting radius for 5px spacing
@@ -152,6 +153,7 @@ $(document).ready(function () {
 				angle = gmynd.radians(angleDeg + (360 / 12 / 6) * countryIndex);
 				let x = Math.cos(angle) * radius + $canvas.width() / 2;
 				let y = Math.sin(angle) * radius + $canvas.height() / 2;
+				console.log(country, monthString, value);
 				$("<div>")
 					.addClass("dot")
 					.css({

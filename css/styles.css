@@ -22,8 +22,8 @@ body {
 	transform: translateY(-50%); /* Zentriert die Box vertikal */
 	display: flex;
 	flex-direction: column;
-	align-items: center; /* Zentriert den Text horizontal */
-	text-align: center; /* Zentriert den Text horizontal */
+	align-items: left; /* Zentriert den Text horizontal */
+	text-align: left; /* Zentriert den Text horizontal */
 }
 
 .controls label {
