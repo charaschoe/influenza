@@ -154,8 +154,8 @@ $(document).ready(function () {
 				let x = Math.cos(angle) * radius + $canvas.width() / 2;
 				let y = Math.sin(angle) * radius + $canvas.height() / 2;
 				console.log(country, monthString, value);
-				$("<div>")
-					.addClass("dot")
+				const dot = $("<div>");
+				dot.addClass("dot")
 					.css({
 						width: "10px",
 						height: "10px",
@@ -170,6 +170,7 @@ $(document).ready(function () {
 					.attr("data-value", value)
 					.appendTo($canvas);
 				index++;
+				if (value === 0) dot.css("display", "none");
 			});
 		});
 		$(".dot")
