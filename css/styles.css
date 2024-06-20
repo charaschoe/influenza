@@ -113,6 +113,5 @@ body {
 	padding: 5px;
 	border-radius: 5px;
 	pointer-events: none;
-	display: none;
 	z-index: 1000;
 }

@@ -6,6 +6,16 @@ $(document).ready(function () {
 	let year = $("#year").val();
 	let caseModel = $(".case-model-option:first").data("value");
 
+	// Prepare the data
+	data.forEach((d) => {
+		d.shareUndefined = parseFloat(
+			d["Share of positive tests - Undefined surveillance"]
+		);
+		d.shareAll = parseFloat(
+			d["Share of positive tests - All types of surveillance"]
+		);
+	});
+
 	// Event listener for case model selection
 	$(".case-model-option").on("click", function () {
 		$(".case-model-option").removeClass("selected");
@@ -64,7 +74,7 @@ $(document).ready(function () {
 		$monthsContainer.empty();
 		const radius = 400; // Adjusted radius for month labels to be at the outer edge
 		monthNames.forEach((month, i) => {
-			const angle = (i * 30 - 90) * (Math.PI / 180); // Angle for each month label
+			const angle = (i * 30 - 90 + 15) * (Math.PI / 180); // Angle for each month label
 			const x = Math.cos(angle) * radius + $canvas.width() / 2; // Adjusted radius for month labels
 			const y = Math.sin(angle) * radius + $canvas.height() / 2;
 			$("<div>")
@@ -178,18 +188,22 @@ $(document).ready(function () {
 				const country = $(this).data("country");
 				const month = $(this).data("month");
 				const value = $(this).data("value");
-				const $infobox = $("<div>")
-					.addClass("infobox")
-					.html(
-						`<strong>${country}</strong><br>${month}<br>${caseModel}: ${value}`
-					)
-					.appendTo("body");
-				const dotPosition = $(this).position();
-				const infoboxPosition = {
-					top: dotPosition.top + $(this).height() + 10,
-					left: dotPosition.left + $(this).width() / 2 - $infobox.width() / 2,
-				};
-				$infobox.css(infoboxPosition);
+				$(".info-box").html(
+					`<strong>${country}</strong><br>${month}<br>${caseModel}: ${value}`
+				);
+
+				// const $infobox = $("<div>")
+				// 	.addClass("infobox")
+				// 	.html(
+				// 		`<strong>${country}</strong><br>${month}<br>${caseModel}: ${value}`
+				// 	)
+				// 	.appendTo("body");
+				// const dotPosition = $(this).position();
+				// const infoboxPosition = {
+				// 	top: dotPosition.top + $(this).height() + 10,
+				// 	left: dotPosition.left + $(this).width() / 2 - $infobox.width() / 2,
+				// };
+				// $infobox.css(infoboxPosition);
 			})
 			.on("mouseleave", function () {
 				$(".infobox").remove();
