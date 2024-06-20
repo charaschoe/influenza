@@ -45,13 +45,9 @@ body {
 	color: #ff4c4c; /* Highlight selected option */
 }
 
-/**
- * CSS-Stile für das Jahr-Steuerungselement.
- *
- * Das Jahr-Steuerungselement ist ein Element mit fester Position, das am unteren Rand der Seite positioniert ist.
- * Es hat eine Breite von 80% und ist anfangs ausgeblendet (display: none).
- * Der Inhalt innerhalb des Jahr-Steuerungselements ist sowohl horizontal als auch vertikal zentriert.
- */
+.case-model-option:hover {
+	color: #ff4c4c; /* Highlight hovered option */
+}
 .year-control {
 	position: fixed;
 	bottom: 10px;
