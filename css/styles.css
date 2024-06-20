@@ -12,7 +12,10 @@ body {
 }
 
 .header {
-	display: none; /* Versteckt die Überschrift */
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 15px; /* Add padding of 15px on the left and right sides */
 }
 
 .controls {
