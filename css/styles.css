@@ -45,16 +45,22 @@ body {
 	color: #ff4c4c; /* Highlight selected option */
 }
 
+/**
+ * CSS-Stile für das Jahr-Steuerungselement.
+ *
+ * Das Jahr-Steuerungselement ist ein Element mit fester Position, das am unteren Rand der Seite positioniert ist.
+ * Es hat eine Breite von 80% und ist anfangs ausgeblendet (display: none).
+ * Der Inhalt innerhalb des Jahr-Steuerungselements ist sowohl horizontal als auch vertikal zentriert.
+ */
 .year-control {
 	position: fixed;
 	bottom: 10px;
 	width: 80%;
-	display: flex;
+	display: none;
 	justify-content: center;
 	align-items: center;
 }
-
-.year-control label {
+*/ .year-control label {
 	margin: 5px;
 }
 
@@ -102,24 +108,13 @@ body {
 	border: 1px solid #fff; /* Add a border for better visibility */
 }
 
-.tooltip {
+.info-box {
 	position: absolute;
+	bottom: 0;
+	left: 0;
 	background: rgba(0, 0, 0, 0.7);
 	color: white;
 	padding: 5px;
-	border-radius: 5px;
-	pointer-events: none;
-	display: none;
-}
-
-.info-box {
-	position: fixed;
-	bottom: 40px;
-	left: 20px; /* Align left */
-	background: rgba(0, 0, 0, 0.7);
-	color: white;
-	padding: 10px;
-	border: 1px solid white;
 	border-radius: 5px;
 	pointer-events: none;
 	display: none;

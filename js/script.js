@@ -145,7 +145,7 @@ $(document).ready(function () {
 						d.Date.startsWith(monthString) && d.Country === country
 				) || { Country: "No Data", Date: monthString, [caseModel]: 0 };
 				const value = monthData[caseModel] || 0;
-				const colorIntensity = Math.max(value / maxCaseValue, 0.0); // Ensuring minimum opacity for visibility
+				const colorIntensity = Math.max(value / maxCaseValue, 0.3); // Ensuring minimum opacity for visibility
 				const color = countryColors[country] || "#888888"; // Default color for 'No Data'
 				let angle = angleStart; // Fixed angle for each month
 				let radius = baseRadius + radiusIncrement * index; // Adjusting radius for 5px spacing
@@ -178,14 +178,21 @@ $(document).ready(function () {
 				const country = $(this).data("country");
 				const month = $(this).data("month");
 				const value = $(this).data("value");
-				$tooltip
+				const $infobox = $("<div>")
+					.addClass("infobox")
 					.html(
 						`<strong>${country}</strong><br>${month}<br>${caseModel}: ${value}`
 					)
-					.show();
+					.appendTo("body");
+				const dotPosition = $(this).position();
+				const infoboxPosition = {
+					top: dotPosition.top + $(this).height() + 10,
+					left: dotPosition.left + $(this).width() / 2 - $infobox.width() / 2,
+				};
+				$infobox.css(infoboxPosition);
 			})
 			.on("mouseleave", function () {
-				$tooltip.hide();
+				$(".infobox").remove();
 			});
 
 		createMonthLabels();
