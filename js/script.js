@@ -26,12 +26,12 @@ $(document).ready(function () {
 
 	// Generate consistent pastel colors for each country and store them in a persistent map
 	const countryColors = {
-		Japan: "#FF4C4C", // Sunset Orange
-		"North Korea": "#36CFC9", // Turquoise
-		Germany: "#FFEC3D", // Gorse
-		Iceland: "#9254DE", // Medium Purple
-		"United Arab Emirates": "#69C0FF", // Malibu
-		Iran: "#FF9C6E", // Atomic Tangerine
+		Japan: "#FF4C4C",
+		"North Korea": "#36CFC9", 
+		Germany: "#FFEC3D",
+		Iceland: "#9254DE", 
+		"United Arab Emirates": "#69C0FF", 
+		Iran: "#FF9C6E", 
 	};
 
 	function assignColorsToCountries(data) {
