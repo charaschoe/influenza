@@ -18,8 +18,19 @@ body {
 	padding: 15px; /* Add padding of 15px on the left and right sides */
 }
 
+.header h1 {
+	margin-bottom: 5px; /* Reduce the margin between the h1 and p elements */
+	margin-left: 10px;
+}
+
+.header p {
+	margin-top: 5px; /* Optional: further reduce the top margin of the p element */
+	margin-left: 10px;
+}
+
 .controls {
 	position: absolute;
+	margin-left: 10px;
 	left: 20px; /* Positioniert die Box auf der linken Seite */
 	top: 50%;
 	transform: translateY(-50%); /* Zentriert die Box vertikal */
