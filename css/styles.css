@@ -117,9 +117,8 @@ body {
 
 .info-box {
 	position: absolute;
-	bottom: 0;
-	left: 0;
-	background: rgba(0, 0, 0, 0.7);
+	bottom: 20px;
+	left: 20px;
 	color: white;
 	padding: 5px;
 	border-radius: 5px;
