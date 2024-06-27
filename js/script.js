@@ -14,6 +14,7 @@ $(document).ready(function () {
 		d.shareAll = parseFloat(
 			d["Share of positive tests - All types of surveillance"]
 		);
+		
 	});
 
 	// Event listener for case model selection
