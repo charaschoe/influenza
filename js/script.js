@@ -179,11 +179,13 @@ $(document).ready(function () {
 						top: `${y}px`,
 						opacity: colorIntensity,
 						border: `1px solid ${color}`, // Adding a border for better visibility
+						display: "none", // Initially hide the dot
 					})
 					.attr("data-country", country)
 					.attr("data-month", monthString)
 					.attr("data-value", value)
-					.appendTo($canvas);
+					.appendTo($canvas)
+					.fadeIn(1000); // Fade in the dot
 				index++;
 				if (value === 0) dot.css("display", "none");
 			});
