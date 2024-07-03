@@ -7,18 +7,14 @@ $(document).ready(function () {
 	let caseModel = $(".case-model-option:first").data("value");
 
 	// Prepare the data
-	const numberFormatter = new Intl.NumberFormat("en-US", {
-		minimumFractionDigits: 2,
-		maximumFractionDigits: 2,
-	});
-
 	data.forEach((d) => {
-		d.shareUndefined = numberFormatter.format(
-			parseFloat(d["Share of positive tests - Undefined surveillance"])
+		d.shareUndefined = parseFloat(
+			d["Share of positive tests - Undefined surveillance"]
 		);
-		d.shareAll = numberFormatter.format(
-			parseFloat(d["Share of positive tests - All types of surveillance"])
+		d.shareAll = parseFloat(
+			d["Share of positive tests - All types of surveillance"]
 		);
+		
 	});
 
 	// Event listener for case model selection
@@ -32,11 +28,11 @@ $(document).ready(function () {
 	// Generate consistent pastel colors for each country and store them in a persistent map
 	const countryColors = {
 		Japan: "#FF4C4C",
-		"North Korea": "#36CFC9",
+		"North Korea": "#36CFC9", 
 		Germany: "#FFEC3D",
-		Iceland: "#9254DE",
-		"United Arab Emirates": "#69C0FF",
-		Iran: "#FF9C6E",
+		Iceland: "#9254DE", 
+		"United Arab Emirates": "#69C0FF", 
+		Iran: "#FF9C6E", 
 	};
 
 	function assignColorsToCountries(data) {
@@ -194,25 +190,21 @@ $(document).ready(function () {
 			.on("mouseenter", function () {
 				const country = $(this).data("country");
 				const month = $(this).data("month");
-				const value =
-					parseFloat($(this).data("value")).toLocaleString("en-US", {
-						minimumFractionDigits: 2,
-						maximumFractionDigits: 2,
-					}) + " %"; // Ensure tooltip shows two decimal places and percentage sign
+				const value = $(this).data("value");
 				$(".info-box").html(
 					`<strong>${country}</strong><br>${month}<br>${caseModel}: ${value}`
 				);
 
 				// const $infobox = $("<div>")
-				//  .addClass("infobox")
-				//  .html(
-				//      `<strong>${country}</strong><br>${month}<br>${caseModel}: ${value}`
-				//  )
-				//  .appendTo("body");
+				// 	.addClass("infobox")
+				// 	.html(
+				// 		`<strong>${country}</strong><br>${month}<br>${caseModel}: ${value}`
+				// 	)
+				// 	.appendTo("body");
 				// const dotPosition = $(this).position();
 				// const infoboxPosition = {
-				//  top: dotPosition.top + $(this).height() + 10,
-				//  left: dotPosition.left + $(this).width() / 2 - $infobox.width() / 2,
+				// 	top: dotPosition.top + $(this).height() + 10,
+				// 	left: dotPosition.left + $(this).width() / 2 - $infobox.width() / 2,
 				// };
 				// $infobox.css(infoboxPosition);
 			})
