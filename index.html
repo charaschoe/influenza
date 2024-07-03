@@ -59,12 +59,6 @@
 			</div>
 			<div
 				class="case-model-option"
-				data-value="Reported cases of severe acute respiratory illness per thousand outpatients"
-			>
-				Severe ARI per 1000 Outpatients
-			</div>
-			<div
-				class="case-model-option"
 				data-value="Share of positive tests - All types of surveillance"
 			>
 				Positive Test Share
@@ -75,5 +69,13 @@
 		<script src="lib/gmynd.js"></script>
 		<script src="data/influenza_six.js"></script>
 		<script src="js/script.js"></script>
+		<script>
+			$(document).ready(function () {
+				// Remove the category with the specific text
+				$(
+					".case-model-option:contains('Severe ARI per 1000 Outpatients')"
+				).remove();
+			});
+		</script>
 	</body>
 </html>
