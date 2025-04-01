@@ -18,10 +18,22 @@ $(document).ready(function () {
 
 	// Event listener for case model selection
 	$(".case-model-option").on("click", function () {
-		$(".case-model-option").removeClass("selected");
-		$(this).addClass("selected");
-		caseModel = $(this).data("value");
-		draw(); // Redraw the visualization with the new case model
+		const validModels = [
+			"Reported cases of influenza-like illnesses",
+			"Reported cases of acute respiratory infections",
+			"Reported cases of severe acute respiratory infections",
+			"Reported deaths caused by severe acute respiratory infections",
+			"Reported cases of influenza-like illness per thousand outpatients",
+			"Share of positive tests - All types of surveillance",
+		];
+
+		const newModel = $(this).data("value");
+		if (validModels.includes(newModel)) {
+			$(".case-model-option").removeClass("selected");
+			$(this).addClass("selected");
+			caseModel = newModel;
+			draw();
+		}
 	});
 
 	// Generate consistent pastel colors for each country and store them in a persistent map
@@ -190,22 +202,9 @@ $(document).ready(function () {
 				const country = $(this).data("country");
 				const month = $(this).data("month");
 				const value = $(this).data("value");
-				$(".info-box").html(
-					`<strong>${country}</strong><br>${month}<br>${caseModel}: ${value}`
+				$(".info-box").text(
+					`${country} - ${month} - ${caseModel}: ${value}`
 				);
-
-				// const $infobox = $("<div>")
-				// 	.addClass("infobox")
-				// 	.html(
-				// 		`<strong>${country}</strong><br>${month}<br>${caseModel}: ${value}`
-				// 	)
-				// 	.appendTo("body");
-				// const dotPosition = $(this).position();
-				// const infoboxPosition = {
-				// 	top: dotPosition.top + $(this).height() + 10,
-				// 	left: dotPosition.left + $(this).width() / 2 - $infobox.width() / 2,
-				// };
-				// $infobox.css(infoboxPosition);
 			})
 			.on("mouseleave", function () {
 				$(".infobox").remove();
@@ -215,15 +214,32 @@ $(document).ready(function () {
 	}
 
 	$("#year").on("input change", function () {
-		year = $("#year").val();
-		draw();
+		const newYear = parseInt($(this).val());
+		if (newYear >= 2009 && newYear <= 2024) {
+			year = newYear;
+			draw();
+		} else {
+			$(this).val(year); // Reset to previous valid value
+		}
 	});
 
 	$(".case-model-option").on("click", function () {
-		$(".case-model-option").removeClass("selected");
-		$(this).addClass("selected");
-		caseModel = $(this).data("value");
-		draw();
+		const validModels = [
+			"Reported cases of influenza-like illnesses",
+			"Reported cases of acute respiratory infections",
+			"Reported cases of severe acute respiratory infections",
+			"Reported deaths caused by severe acute respiratory infections",
+			"Reported cases of influenza-like illness per thousand outpatients",
+			"Share of positive tests - All types of surveillance",
+		];
+
+		const newModel = $(this).data("value");
+		if (validModels.includes(newModel)) {
+			$(".case-model-option").removeClass("selected");
+			$(this).addClass("selected");
+			caseModel = newModel;
+			draw();
+		}
 	});
 
 	draw();
