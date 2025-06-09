@@ -20,7 +20,15 @@
 	<body>
 		<div class="header">
 			<h1>INFLUENZA</h1>
-			<p>Interactive data visualization by Jonas Wienberg</p>
+			<p>
+				Interactive data visualization by
+				<a
+					href="https://jonaswienberg.me"
+					target="_blank"
+					rel="noopener noreferrer"
+					>Jonas Wienberg</a
+				>
+			</p>
 		</div>
 		<div id="months-container"></div>
 		<div class="canvas" id="canvas"></div>
@@ -74,86 +82,897 @@
 			>
 				ILI per 1000 Outpatients
 			</div>
+			<div
+				class="case-model-option"
+				data-value="Seasonal Risk Patterns - Which countries have the most predictable/severe seasons"
+			>
+				Seasonal Risk Patterns
+			</div>
 		</div>
-		
+
+		<div class="comparison-panel">
+			<div class="comparison-toggle">
+				<button id="toggle-comparison">Country Analysis</button>
+			</div>
+
+			<div
+				class="comparison-content"
+				id="comparison-content"
+				style="display: none"
+			>
+				<h3>Compare Countries</h3>
+
+				<!-- Enhanced for Seasonal Risk Patterns -->
+				<div id="seasonal-risk-analysis" style="display: none">
+					<div class="seasonal-controls">
+						<div class="filter-group">
+							<label for="seasonal-year">Year:</label>
+							<select id="seasonal-year">
+								<!-- Populated dynamically -->
+							</select>
+						</div>
+						<div class="filter-group">
+							<label for="risk-threshold">Risk Threshold:</label>
+							<select id="risk-threshold">
+								<option value="0">All Countries</option>
+								<option value="30">Moderate+ Risk (30+)</option>
+								<option value="50">High+ Risk (50+)</option>
+								<option value="70">Very High Risk (70+)</option>
+							</select>
+						</div>
+						<button
+							id="analyze-seasonal-risk"
+							class="primary-button"
+						>
+							Analyze Risk Patterns
+						</button>
+					</div>
+				</div>
+				<div class="comparison-mode-selector">
+					<label>
+						<input
+							type="radio"
+							name="comparison-mode"
+							value="monthly"
+							checked
+						/>
+						Monthly Comparison
+					</label>
+					<label>
+						<input
+							type="radio"
+							name="comparison-mode"
+							value="seasonal"
+						/>
+						Seasonal Overview
+					</label>
+					<label>
+						<input
+							type="radio"
+							name="comparison-mode"
+							value="yearly"
+						/>
+						Multi-Year Analysis
+					</label>
+				</div>
+
+				<div class="comparison-filters" id="monthly-filters">
+					<div class="filter-group">
+						<label for="comparison-month">Select Month:</label>
+						<select id="comparison-month">
+							<option value="01">January</option>
+							<option value="02">February</option>
+							<option value="03">March</option>
+							<option value="04">April</option>
+							<option value="05">May</option>
+							<option value="06">June</option>
+							<option value="07">July</option>
+							<option value="08">August</option>
+							<option value="09">September</option>
+							<option value="10">October</option>
+							<option value="11">November</option>
+							<option value="12">December</option>
+						</select>
+					</div>
+					<div class="filter-group">
+						<label for="comparison-year">Select Year:</label>
+						<select id="comparison-year">
+							<!-- Years will be populated dynamically -->
+						</select>
+					</div>
+					<div class="comparison-buttons">
+						<button id="run-comparison">Compare Month</button>
+						<button id="run-seasonal-comparison">
+							Seasonal Overview
+						</button>
+					</div>
+				</div>
+
+				<div
+					class="comparison-filters"
+					id="yearly-filters"
+					style="display: none"
+				>
+					<div class="filter-group">
+						<label
+							>Select Years (hold Ctrl/Cmd for multiple):</label
+						>
+						<select id="comparison-years" multiple size="5">
+							<!-- Years will be populated dynamically -->
+						</select>
+					</div>
+					<div class="filter-group">
+						<label for="yearly-metric">Focus Metric:</label>
+						<select id="yearly-metric">
+							<option value="peak">Peak Values</option>
+							<option value="total">Annual Totals</option>
+							<option value="average">Monthly Averages</option>
+						</select>
+					</div>
+					<div class="comparison-buttons">
+						<button id="run-yearly-comparison">
+							Analyze Years
+						</button>
+					</div>
+				</div>
+
+				<div class="comparison-results" id="comparison-results">
+					<!-- Comparison results will be displayed here -->
+				</div>
+			</div>
+		</div>
+
+		<div class="settings-toggle">
+			<button id="toggle-settings">Settings</button>
+		</div>
+
 		<div class="explanation-toggle">
 			<button id="toggle-explanation">Show Info</button>
 		</div>
-		
-		<div class="explanation" id="explanation-panel" style="display: none;">
+
+		<div class="settings-overlay" id="settings-panel" style="display: none">
+			<div class="settings-page">
+				<div class="settings-header">
+					<h2>Visualization Settings</h2>
+					<p>
+						Adjust these settings to customize your visualization
+						experience. Changes are applied immediately.
+					</p>
+				</div>
+
+				<div class="settings-content">
+					<div class="settings-group">
+						<h3>Display Settings</h3>
+
+						<div class="setting-text-item">
+							<div class="setting-label">Data Point Size</div>
+							<div class="setting-options">
+								<span
+									class="setting-option"
+									data-setting="dotSize"
+									data-value="5"
+									>Small (5px)</span
+								>
+								<span
+									class="setting-option active"
+									data-setting="dotSize"
+									data-value="10"
+									>Medium (10px)</span
+								>
+								<span
+									class="setting-option"
+									data-setting="dotSize"
+									data-value="15"
+									>Large (15px)</span
+								>
+								<span
+									class="setting-option"
+									data-setting="dotSize"
+									data-value="20"
+									>Extra Large (20px)</span
+								>
+							</div>
+							<div class="live-preview-box">
+								<div class="preview-dots">
+									<div
+										class="preview-dot"
+										style="width: 5px; height: 5px"
+									></div>
+									<div
+										class="preview-dot"
+										style="width: 10px; height: 10px"
+									></div>
+									<div
+										class="preview-dot"
+										style="width: 15px; height: 15px"
+									></div>
+									<div
+										class="preview-dot"
+										style="width: 20px; height: 20px"
+									></div>
+								</div>
+								<div class="preview-text">
+									Size comparison → Current:
+									<span id="current-size">10px</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="setting-text-item">
+							<div class="setting-label">Data Point Opacity</div>
+							<div class="setting-options">
+								<span
+									class="setting-option"
+									data-setting="dotOpacity"
+									data-value="0.3"
+									>30%</span
+								>
+								<span
+									class="setting-option"
+									data-setting="dotOpacity"
+									data-value="0.5"
+									>50%</span
+								>
+								<span
+									class="setting-option active"
+									data-setting="dotOpacity"
+									data-value="0.8"
+									>80%</span
+								>
+								<span
+									class="setting-option"
+									data-setting="dotOpacity"
+									data-value="1.0"
+									>100%</span
+								>
+							</div>
+							<div class="live-preview-box">
+								<div class="preview-dots">
+									<div
+										class="preview-dot"
+										style="
+											width: 12px;
+											height: 12px;
+											opacity: 0.3;
+											background: #36cfc9;
+										"
+									></div>
+									<div
+										class="preview-dot"
+										style="
+											width: 12px;
+											height: 12px;
+											opacity: 0.5;
+											background: #36cfc9;
+										"
+									></div>
+									<div
+										class="preview-dot"
+										style="
+											width: 12px;
+											height: 12px;
+											opacity: 0.8;
+											background: #36cfc9;
+										"
+									></div>
+									<div
+										class="preview-dot"
+										style="
+											width: 12px;
+											height: 12px;
+											opacity: 1;
+											background: #36cfc9;
+										"
+									></div>
+								</div>
+								<div class="preview-text">
+									Opacity levels → Current:
+									<span id="current-opacity">80%</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="setting-text-item">
+							<div class="setting-label">
+								Background Brightness
+							</div>
+							<div class="setting-options">
+								<span
+									class="setting-option"
+									data-setting="backgroundBrightness"
+									data-value="0.5"
+									>Dark (50%)</span
+								>
+								<span
+									class="setting-option"
+									data-setting="backgroundBrightness"
+									data-value="0.8"
+									>Dim (80%)</span
+								>
+								<span
+									class="setting-option active"
+									data-setting="backgroundBrightness"
+									data-value="1.0"
+									>Normal (100%)</span
+								>
+								<span
+									class="setting-option"
+									data-setting="backgroundBrightness"
+									data-value="1.3"
+									>Bright (130%)</span
+								>
+							</div>
+							<div class="live-preview-box">
+								<div class="preview-dots">
+									<div
+										class="preview-dot"
+										style="
+											width: 12px;
+											height: 12px;
+											background: #333;
+											opacity: 0.5;
+										"
+									></div>
+									<div
+										class="preview-dot"
+										style="
+											width: 12px;
+											height: 12px;
+											background: #555;
+											opacity: 0.8;
+										"
+									></div>
+									<div
+										class="preview-dot"
+										style="
+											width: 12px;
+											height: 12px;
+											background: #777;
+											opacity: 1;
+										"
+									></div>
+									<div
+										class="preview-dot"
+										style="
+											width: 12px;
+											height: 12px;
+											background: #999;
+											opacity: 1;
+										"
+									></div>
+								</div>
+								<div class="preview-text">
+									Background brightness → Current:
+									<span id="current-brightness">100%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="settings-group">
+						<h3>Animation & Interaction</h3>
+
+						<div class="setting-text-item">
+							<div class="setting-label">Transitions</div>
+							<div class="setting-options">
+								<span
+									class="setting-option active"
+									data-setting="enableTransitions"
+									data-value="true"
+									>Smooth animations</span
+								>
+								<span
+									class="setting-option"
+									data-setting="enableTransitions"
+									data-value="false"
+									>Instant changes</span
+								>
+							</div>
+							<div class="setting-example">
+								Affects dot appearance and year changes
+							</div>
+						</div>
+
+						<div class="setting-text-item">
+							<div class="setting-label">Grid Lines</div>
+							<div class="setting-options">
+								<span
+									class="setting-option active"
+									data-setting="showGridLines"
+									data-value="true"
+									>Show grid</span
+								>
+								<span
+									class="setting-option"
+									data-setting="showGridLines"
+									data-value="false"
+									>Hide grid</span
+								>
+							</div>
+							<div class="setting-example">
+								Radial lines from center to edge
+							</div>
+						</div>
+
+						<div class="setting-text-item">
+							<div class="setting-label">Month Labels</div>
+							<div class="setting-options">
+								<span
+									class="setting-option active"
+									data-setting="showMonthLabels"
+									data-value="true"
+									>Show months</span
+								>
+								<span
+									class="setting-option"
+									data-setting="showMonthLabels"
+									data-value="false"
+									>Hide months</span
+								>
+							</div>
+							<div class="setting-example">
+								January, February, March... around the spiral
+							</div>
+						</div>
+					</div>
+
+					<div class="settings-group">
+						<h3>Tooltip Behavior</h3>
+
+						<div class="setting-text-item">
+							<div class="setting-label">Tooltip Delay</div>
+							<div class="setting-options">
+								<span
+									class="setting-option active"
+									data-setting="tooltipDelay"
+									data-value="0"
+									>Instant</span
+								>
+								<span
+									class="setting-option"
+									data-setting="tooltipDelay"
+									data-value="200"
+									>200ms</span
+								>
+								<span
+									class="setting-option"
+									data-setting="tooltipDelay"
+									data-value="500"
+									>500ms</span
+								>
+								<span
+									class="setting-option"
+									data-setting="tooltipDelay"
+									data-value="1000"
+									>1 second</span
+								>
+							</div>
+							<div class="setting-example">
+								How quickly tooltips appear on hover
+							</div>
+						</div>
+
+						<div class="setting-text-item">
+							<div class="setting-label">Cursor Following</div>
+							<div class="setting-options">
+								<span
+									class="setting-option active"
+									data-setting="cursorFollowing"
+									data-value="false"
+									>Fixed position</span
+								>
+								<span
+									class="setting-option"
+									data-setting="cursorFollowing"
+									data-value="true"
+									>Follow cursor</span
+								>
+							</div>
+							<div class="setting-example">
+								Whether tooltips move with your mouse
+							</div>
+						</div>
+					</div>
+
+					<div class="settings-group">
+						<h3>Accessibility & Data</h3>
+
+						<div class="setting-text-item">
+							<div class="setting-label">High Contrast</div>
+							<div class="setting-options">
+								<span
+									class="setting-option active"
+									data-setting="highContrast"
+									data-value="false"
+									>Normal contrast</span
+								>
+								<span
+									class="setting-option"
+									data-setting="highContrast"
+									data-value="true"
+									>High contrast</span
+								>
+							</div>
+							<div class="setting-example">
+								Enhanced visibility for better accessibility
+							</div>
+						</div>
+
+						<div class="setting-text-item">
+							<div class="setting-label">Zero Values</div>
+							<div class="setting-options">
+								<span
+									class="setting-option active"
+									data-setting="showZeroValues"
+									data-value="false"
+									>Hide zeros</span
+								>
+								<span
+									class="setting-option"
+									data-setting="showZeroValues"
+									data-value="true"
+									>Show zeros</span
+								>
+							</div>
+							<div class="setting-example">
+								Display countries with no reported data
+							</div>
+						</div>
+
+						<div class="setting-text-item">
+							<div class="setting-label">Data Scaling</div>
+							<div class="setting-options">
+								<span
+									class="setting-option active"
+									data-setting="scalingMethod"
+									data-value="global"
+									>Global scale</span
+								>
+								<span
+									class="setting-option"
+									data-setting="scalingMethod"
+									data-value="yearly"
+									>Yearly scale</span
+								>
+								<span
+									class="setting-option"
+									data-setting="scalingMethod"
+									data-value="adaptive"
+									>Adaptive</span
+								>
+							</div>
+							<div class="setting-example">
+								How data values are normalized
+							</div>
+						</div>
+					</div>
+
+					<div class="settings-actions">
+						<button class="settings-action-btn" id="reset-settings">
+							Reset to Defaults
+						</button>
+						<button
+							class="settings-action-btn primary"
+							id="save-settings"
+						>
+							Save Settings
+						</button>
+						<button
+							class="settings-action-btn secondary"
+							id="close-settings"
+						>
+							Close Settings
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="explanation" id="explanation-panel" style="display: none">
+			<h3>How This Visualization Works</h3>
+
+			<div class="explanation-section">
+				<h4>Spiral Timeline Concept</h4>
+				<p>
+					This visualization displays influenza data as a spiral
+					timeline where:
+				</p>
+				<ul>
+					<li>
+						<strong>Each full spiral rotation</strong> represents
+						one year (12 months)
+					</li>
+					<li>
+						<strong>Data points</strong> are positioned by month
+						around the spiral
+					</li>
+					<li>
+						<strong>Point size</strong> indicates the magnitude of
+						values
+					</li>
+					<li>
+						<strong>Colors</strong> represent different countries
+					</li>
+					<li>
+						<strong>Hovering</strong> over data points reveals
+						detailed information in tooltips
+					</li>
+				</ul>
+			</div>
+
+			<div class="explanation-section">
+				<h4>Interaction Guide</h4>
+				<p><strong>🖱️ Mouse Interaction:</strong></p>
+				<ul>
+					<li>
+						Hover over any data point to see detailed information
+					</li>
+					<li>
+						Tooltips show country, date, metric value, and change
+						from previous month
+					</li>
+					<li>
+						For Seasonal Risk Patterns: risk category and visual
+						risk bar included
+					</li>
+				</ul>
+				<p><strong>⚙️ Controls:</strong></p>
+				<ul>
+					<li>
+						Use the year control to navigate through different years
+						(2009-2024)
+					</li>
+					<li>Select different metrics from the left panel</li>
+					<li>Use Country Analysis panel for detailed comparisons</li>
+					<li>
+						Access Settings (above) to customize the visualization
+					</li>
+				</ul>
+			</div>
+
+			<div class="explanation-section">
+				<h4>Data Metrics Explained</h4>
+				<p><strong>Available Metrics:</strong></p>
+				<ul>
+					<li>
+						<strong>Positive Test Share:</strong> Percentage of
+						influenza tests that returned positive
+					</li>
+					<li>
+						<strong>Influenza-like Illnesses (ILI):</strong>
+						Reported cases of flu-like symptoms
+					</li>
+					<li>
+						<strong>Acute Respiratory Infections (ARI):</strong>
+						Broader category of respiratory illnesses
+					</li>
+					<li>
+						<strong>Severe ARI Cases & Deaths:</strong> Most serious
+						respiratory infection outcomes
+					</li>
+					<li>
+						<strong>ILI per 1000 Outpatients:</strong> Normalized
+						rate of flu-like illness
+					</li>
+					<li>
+						<strong>Seasonal Risk Patterns:</strong> AI-calculated
+						risk scores combining multiple factors
+					</li>
+				</ul>
+			</div>
+
+			<div class="explanation-section">
+				<h4>Seasonal Risk Patterns Algorithm</h4>
+				<p>
+					This advanced metric combines multiple factors to create
+					risk scores (0-100):
+				</p>
+				<ul>
+					<li>
+						<strong>25% Predictability:</strong> How consistent the
+						pattern is across years
+					</li>
+					<li>
+						<strong>45% Global Severity:</strong> How severe
+						compared to worldwide data
+					</li>
+					<li>
+						<strong>15% Seasonal Timing:</strong> Bonus for typical
+						flu season months
+					</li>
+					<li>
+						<strong>15% Seasonal Strength:</strong> How seasonal the
+						country's pattern is
+					</li>
+				</ul>
+				<p>
+					<strong>Risk Categories:</strong> Very High (70+), High
+					(50-69), Moderate (30-49), Low (15-29), Very Low (<15)
+				</p>
+			</div>
+
+			<div class="explanation-section">
+				<h4>Data Sources & Methodology</h4>
+				<p>
+					<strong>Data Source:</strong> World Health Organization
+					(WHO) Global Influenza Surveillance Network
+				</p>
+				<p>
+					<strong>Coverage:</strong> 2009-2024, focusing on 6 key
+					countries with comprehensive reporting
+				</p>
+				<p>
+					<strong>Update Frequency:</strong> Data reflects the most
+					recent WHO submissions
+				</p>
+				<p>
+					<strong>Processing:</strong> Raw surveillance data is
+					cleaned, normalized, and enhanced with seasonal risk
+					calculations
+				</p>
+				<p>
+					<strong>Limitations:</strong> Reporting practices vary by
+					country; some gaps in data may exist
+				</p>
+			</div>
+
 			<h3>Country Color Codes</h3>
 			<div class="country-colors">
 				<div class="country-color-item">
-					<span class="color-dot" style="background-color: #FF4C4C;"></span>
-					<strong>Japan</strong> - Red from the Japanese flag (rising sun)
+					<span
+						class="color-dot"
+						style="background-color: #ff4c4c"
+					></span>
+					<strong>Japan</strong> - Red from the Japanese flag (rising
+					sun)
 				</div>
 				<div class="country-color-item">
-					<span class="color-dot" style="background-color: #36CFC9;"></span>
-					<strong>North Korea</strong> - Cyan representing the blue from the Korean flag
+					<span
+						class="color-dot"
+						style="background-color: #36cfc9"
+					></span>
+					<strong>North Korea</strong> - Cyan representing the blue
+					from the Korean flag
 				</div>
 				<div class="country-color-item">
-					<span class="color-dot" style="background-color: #FFEC3D;"></span>
-					<strong>Germany</strong> - Yellow from the German flag (black-red-gold)
+					<span
+						class="color-dot"
+						style="background-color: #ffec3d"
+					></span>
+					<strong>Germany</strong> - Yellow from the German flag
+					(black-red-gold)
 				</div>
 				<div class="country-color-item">
-					<span class="color-dot" style="background-color: #9254DE;"></span>
-					<strong>Iceland</strong> - Purple representing the blue from the Icelandic flag
+					<span
+						class="color-dot"
+						style="background-color: #9254de"
+					></span>
+					<strong>Iceland</strong> - Purple representing the blue from
+					the Icelandic flag
 				</div>
 				<div class="country-color-item">
-					<span class="color-dot" style="background-color: #69C0FF;"></span>
-					<strong>United Arab Emirates</strong> - Sky blue representing unity and the sky
+					<span
+						class="color-dot"
+						style="background-color: #69c0ff"
+					></span>
+					<strong>United Arab Emirates</strong> - Sky blue
+					representing unity and the sky
 				</div>
 				<div class="country-color-item">
-					<span class="color-dot" style="background-color: #FF9C6E;"></span>
-					<strong>Iran</strong> - Orange representing the warmth of Persian culture
+					<span
+						class="color-dot"
+						style="background-color: #ff9c6e"
+					></span>
+					<strong>Iran</strong> - Orange representing the warmth of
+					Persian culture
 				</div>
 			</div>
-			
+
 			<h3>Data Categories</h3>
 			<div class="category-list">
 				<div class="category-item">
 					<strong>Influenza-like Illnesses (ILI)</strong>
-					<p>Reported cases meeting WHO definition of fever with respiratory symptoms</p>
+					<p>
+						Reported cases meeting WHO definition of fever with
+						respiratory symptoms
+					</p>
 				</div>
 				<div class="category-item">
 					<strong>Acute Respiratory Infections (ARI)</strong>
-					<p>Cases of acute onset respiratory illness reported by healthcare facilities</p>
+					<p>
+						Cases of acute onset respiratory illness reported by
+						healthcare facilities
+					</p>
 				</div>
 				<div class="category-item">
 					<strong>Severe ARI Cases</strong>
-					<p>Hospitalizations for severe acute respiratory infections requiring intensive care</p>
+					<p>
+						Hospitalizations for severe acute respiratory infections
+						requiring intensive care
+					</p>
 				</div>
 				<div class="category-item">
 					<strong>Severe ARI Deaths</strong>
-					<p>Mortality attributed to severe acute respiratory infections</p>
+					<p>
+						Mortality attributed to severe acute respiratory
+						infections
+					</p>
 				</div>
 				<div class="category-item">
 					<strong>ILI per 1000 Outpatients</strong>
-					<p>Rate of influenza-like illness per thousand outpatient consultations</p>
+					<p>
+						Rate of influenza-like illness per thousand outpatient
+						consultations
+					</p>
 				</div>
 				<div class="category-item">
 					<strong>Positive Test Share</strong>
-					<p>Percentage of laboratory tests positive for influenza viruses</p>
+					<p>
+						Percentage of laboratory tests positive for influenza
+						viruses
+					</p>
+				</div>
+				<div class="category-item">
+					<strong>Seasonal Risk Patterns</strong>
+					<p>
+						Advanced analysis of seasonal influenza patterns using
+						global normalization and sophisticated scoring
+						algorithms. Combines multiple factors: 25%
+						predictability (consistency across years), 45% global
+						severity (relative intensity), 15% seasonal timing
+						(winter peak months), 15% seasonal strength (variation
+						patterns). Uses percentile-based scaling and non-linear
+						distribution for better differentiation. Scores range
+						from 0-100.
+					</p>
+					<p>
+						<em
+							>Interpretation: Higher scores indicate countries
+							with more predictable and severe seasonal patterns.
+							Lower scores suggest either irregular patterns or
+							less severe seasonal impacts.</em
+						>
+					</p>
 				</div>
 			</div>
-			
+
 			<div class="disclaimer">
 				<h4>Data Source & Disclaimer</h4>
-				<p>All data sourced from WHO FluNet (Global Influenza Surveillance and Response System) and collected according to World Health Organization surveillance standards and reporting protocols. Data represents officially reported cases and may not reflect actual disease burden due to variations in healthcare access, testing capacity, and reporting practices between countries and time periods. Surveillance systems and reporting completeness may vary significantly across regions. Data last retrieved from WHO FluNet database in December 2024.</p>
+				<p>
+					All data sourced from WHO FluNet (Global Influenza
+					Surveillance and Response System) and collected according to
+					World Health Organization surveillance standards and
+					reporting protocols. Data represents officially reported
+					cases and may not reflect actual disease burden due to
+					variations in healthcare access, testing capacity, and
+					reporting practices between countries and time periods.
+					Surveillance systems and reporting completeness may vary
+					significantly across regions. Data last retrieved from WHO
+					FluNet database in December 2024.
+				</p>
 			</div>
 		</div>
-		
+
 		<div class="legal-disclaimer">
-			<p>© <span id="current-year">2024</span> Jonas Wienberg | Data: WHO FluNet Global Influenza Programme | Last Updated: <span id="last-updated">December 2024</span> | Hosted on Vercel | This site uses cookies for analytics purposes</p>
+			<p>
+				© <span id="current-year">2024</span> Jonas Wienberg | Data: WHO
+				FluNet Global Influenza Programme | Last Updated:
+				<span id="last-updated">December 2024</span> | Hosted on Vercel
+				| This site uses cookies for analytics purposes
+			</p>
 		</div>
-		
+
 		<div class="info-box" id="info-box"></div>
 		<!-- Vercel Analytics -->
 		<script>
-			window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+			window.va =
+				window.va ||
+				function () {
+					(window.vaq = window.vaq || []).push(arguments);
+				};
 		</script>
 		<script defer src="/_vercel/insights/script.js"></script>
-		
+
 		<script src="lib/jquery-3.7.1.min.js"></script>
 		<script src="lib/gmynd.js"></script>
 		<script src="data/influenza_six.js"></script>
