@@ -201,13 +201,103 @@ $(document).ready(function () {
 			.on("mouseenter", function () {
 				const country = $(this).data("country");
 				const month = $(this).data("month");
-				const value = $(this).data("value");
-				$(".info-box").text(
-					`${country} - ${month} - ${caseModel}: ${value}`
-				);
+				const value = parseFloat($(this).data("value"));
+				
+				// Format the date nicely
+				const date = new Date(month + "-01");
+				const monthNames = [
+					"January", "February", "March", "April", "May", "June",
+					"July", "August", "September", "October", "November", "December"
+				];
+				const formattedDate = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+				
+				// Get shorter, more readable case model names
+				const caseModelDisplayNames = {
+					"Reported cases of influenza-like illnesses": "Influenza-like Illnesses",
+					"Reported cases of acute respiratory infections": "Acute Respiratory Infections",
+					"Reported cases of severe acute respiratory infections": "Severe Acute Respiratory Infections",
+					"Reported deaths caused by severe acute respiratory infections": "Deaths from Severe ARI",
+					"Reported cases of influenza-like illness per thousand outpatients": "ILI per 1,000 Outpatients",
+					"Share of positive tests - All types of surveillance": "Share of Positive Tests"
+				};
+				
+				const displayName = caseModelDisplayNames[caseModel] || caseModel;
+				
+				// Find previous month's data for comparison
+				const currentDate = new Date(month + "-01");
+				let previousValue = null;
+				let previousMonth = null;
+				
+				// Look for data in previous months, going back up to 12 months
+				for (let i = 1; i <= 12; i++) {
+					const prevDate = new Date(currentDate);
+					prevDate.setMonth(prevDate.getMonth() - i);
+					const prevMonthString = prevDate.toISOString().slice(0, 7);
+					
+					const prevData = data.find(d => 
+						d.Date.startsWith(prevMonthString) && 
+						d.Country === country && 
+						d[caseModel] && 
+						parseFloat(d[caseModel]) > 0
+					);
+					
+					if (prevData) {
+						previousValue = parseFloat(prevData[caseModel]);
+						previousMonth = `${monthNames[prevDate.getMonth()]} ${prevDate.getFullYear()}`;
+						break;
+					}
+				}
+				
+				// Calculate change and format accordingly
+				let changeText = "";
+				let changeClass = "";
+				
+				if (previousValue !== null && value > 0) {
+					const absoluteChange = value - previousValue;
+					const percentChange = ((value - previousValue) / previousValue) * 100;
+					
+					if (Math.abs(percentChange) >= 0.1) { // Only show if change is significant
+						const changeSymbol = absoluteChange > 0 ? "+" : "";
+						
+						if (caseModel.includes("Share of positive tests")) {
+							changeText = `${changeSymbol}${absoluteChange.toFixed(2)}pp (${changeSymbol}${percentChange.toFixed(1)}%)`;
+						} else if (caseModel.includes("per thousand")) {
+							changeText = `${changeSymbol}${absoluteChange.toFixed(1)} (${changeSymbol}${percentChange.toFixed(1)}%)`;
+						} else {
+							changeText = `${changeSymbol}${Math.round(absoluteChange).toLocaleString('en-US')} (${changeSymbol}${percentChange.toFixed(1)}%)`;
+						}
+						
+						// Determine color based on change direction
+						changeClass = absoluteChange > 0 ? "change-increase" : "change-decrease";
+					}
+				}
+				
+				// Format the current value
+				let formattedValue;
+				if (caseModel.includes("Share of positive tests")) {
+					formattedValue = `${value.toFixed(2)}%`;
+				} else if (caseModel.includes("per thousand")) {
+					formattedValue = `${value.toFixed(1)}`;
+				} else {
+					formattedValue = Math.round(value).toLocaleString('en-US');
+				}
+				
+				// Create structured tooltip content with change information
+				let tooltipContent = `
+					<div class="tooltip-header">${country}</div>
+					<div class="tooltip-date">${formattedDate}</div>
+					<div class="tooltip-metric">${displayName}</div>
+					<div class="tooltip-value">${formattedValue}</div>
+				`;
+				
+				if (changeText) {
+					tooltipContent += `<div class="tooltip-change ${changeClass}">vs. ${previousMonth}: ${changeText}</div>`;
+				}
+				
+				$(".info-box").html(tooltipContent);
 			})
 			.on("mouseleave", function () {
-				$(".infobox").remove();
+				$(".info-box").empty();
 			});
 
 		createMonthLabels();
