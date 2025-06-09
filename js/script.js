@@ -4,7 +4,7 @@ $(document).ready(function () {
 	const $yearDisplay = $("#year-display");
 	const $monthsContainer = $("#months-container");
 	let year = $("#year").val();
-	let caseModel = $(".case-model-option:first").data("value");
+	let caseModel = "Share of positive tests - All types of surveillance";
 
 	// Prepare the data
 	data.forEach((d) => {
@@ -331,6 +331,41 @@ $(document).ready(function () {
 			draw();
 		}
 	});
+
+	// Toggle explanation panel
+	$("#toggle-explanation").on("click", function() {
+		const $panel = $("#explanation-panel");
+		const $button = $(this);
+		
+		if ($panel.is(":visible")) {
+			$panel.fadeOut(300);
+			$button.text("Show Info");
+		} else {
+			$panel.fadeIn(300);
+			$button.text("Hide Info");
+		}
+	});
+
+	// Set dynamic year and last updated date
+	function updateTimestamps() {
+		const currentYear = new Date().getFullYear();
+		const currentDate = new Date();
+		const months = [
+			"January", "February", "March", "April", "May", "June",
+			"July", "August", "September", "October", "November", "December"
+		];
+		const lastUpdated = `${months[currentDate.getMonth()]} ${currentYear}`;
+		
+		$("#current-year").text(currentYear);
+		$("#last-updated").text(lastUpdated);
+	}
+
+	// Update timestamps on any interaction
+	$(".case-model-option").on("click", updateTimestamps);
+	$("#year").on("input change", updateTimestamps);
+
+	// Initialize timestamps
+	updateTimestamps();
 
 	draw();
 });

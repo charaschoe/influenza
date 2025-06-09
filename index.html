@@ -39,6 +39,12 @@
 
 		<div class="controls">
 			<div
+				class="case-model-option selected"
+				data-value="Share of positive tests - All types of surveillance"
+			>
+				Positive Test Share
+			</div>
+			<div
 				class="case-model-option"
 				data-value="Reported cases of influenza-like illnesses"
 			>
@@ -68,13 +74,79 @@
 			>
 				ILI per 1000 Outpatients
 			</div>
-			<div
-				class="case-model-option"
-				data-value="Share of positive tests - All types of surveillance"
-			>
-				Positive Test Share
+		</div>
+		
+		<div class="explanation-toggle">
+			<button id="toggle-explanation">Show Info</button>
+		</div>
+		
+		<div class="explanation" id="explanation-panel" style="display: none;">
+			<h3>Country Color Codes</h3>
+			<div class="country-colors">
+				<div class="country-color-item">
+					<span class="color-dot" style="background-color: #FF4C4C;"></span>
+					<strong>Japan</strong> - Red from the Japanese flag (rising sun)
+				</div>
+				<div class="country-color-item">
+					<span class="color-dot" style="background-color: #36CFC9;"></span>
+					<strong>North Korea</strong> - Cyan representing the blue from the Korean flag
+				</div>
+				<div class="country-color-item">
+					<span class="color-dot" style="background-color: #FFEC3D;"></span>
+					<strong>Germany</strong> - Yellow from the German flag (black-red-gold)
+				</div>
+				<div class="country-color-item">
+					<span class="color-dot" style="background-color: #9254DE;"></span>
+					<strong>Iceland</strong> - Purple representing the blue from the Icelandic flag
+				</div>
+				<div class="country-color-item">
+					<span class="color-dot" style="background-color: #69C0FF;"></span>
+					<strong>United Arab Emirates</strong> - Sky blue representing unity and the sky
+				</div>
+				<div class="country-color-item">
+					<span class="color-dot" style="background-color: #FF9C6E;"></span>
+					<strong>Iran</strong> - Orange representing the warmth of Persian culture
+				</div>
+			</div>
+			
+			<h3>Data Categories</h3>
+			<div class="category-list">
+				<div class="category-item">
+					<strong>Influenza-like Illnesses (ILI)</strong>
+					<p>Reported cases meeting WHO definition of fever with respiratory symptoms</p>
+				</div>
+				<div class="category-item">
+					<strong>Acute Respiratory Infections (ARI)</strong>
+					<p>Cases of acute onset respiratory illness reported by healthcare facilities</p>
+				</div>
+				<div class="category-item">
+					<strong>Severe ARI Cases</strong>
+					<p>Hospitalizations for severe acute respiratory infections requiring intensive care</p>
+				</div>
+				<div class="category-item">
+					<strong>Severe ARI Deaths</strong>
+					<p>Mortality attributed to severe acute respiratory infections</p>
+				</div>
+				<div class="category-item">
+					<strong>ILI per 1000 Outpatients</strong>
+					<p>Rate of influenza-like illness per thousand outpatient consultations</p>
+				</div>
+				<div class="category-item">
+					<strong>Positive Test Share</strong>
+					<p>Percentage of laboratory tests positive for influenza viruses</p>
+				</div>
+			</div>
+			
+			<div class="disclaimer">
+				<h4>Data Source & Disclaimer</h4>
+				<p>All data sourced from WHO FluNet (Global Influenza Surveillance and Response System) and collected according to World Health Organization surveillance standards and reporting protocols. Data represents officially reported cases and may not reflect actual disease burden due to variations in healthcare access, testing capacity, and reporting practices between countries and time periods. Surveillance systems and reporting completeness may vary significantly across regions. Data last retrieved from WHO FluNet database in December 2024.</p>
 			</div>
 		</div>
+		
+		<div class="legal-disclaimer">
+			<p>© <span id="current-year">2024</span> Jonas Wienberg | Data: WHO FluNet Global Influenza Programme | Last Updated: <span id="last-updated">December 2024</span> | Hosted on Vercel | This site uses cookies for analytics purposes</p>
+		</div>
+		
 		<div class="info-box" id="info-box"></div>
 		<script src="lib/jquery-3.7.1.min.js"></script>
 		<script src="lib/gmynd.js"></script>
