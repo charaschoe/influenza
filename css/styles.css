@@ -407,25 +407,6 @@ body {
 .case-model-option:hover {
 	color: #ff4c4c; /* Highlight hovered option */
 }
-.year-control {
-	position: fixed;
-	bottom: 10px;
-	width: 80%;
-	display: none;
-	justify-content: center;
-	align-items: center;
-}
-*/ .year-control label {
-	margin: 5px;
-}
-
-.year-control input {
-	margin: 5px;
-}
-
-#year-display {
-	margin-left: 10px;
-}
 
 #months-container {
 	position: absolute;

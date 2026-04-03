@@ -262,9 +262,8 @@ Created by Jonas Wienberg
 ### Getting Started
 
 1. **Open the visualization**: Navigate to the main dashboard
-2. **Select year**: Use the year control to choose 2009-2024
-3. **Choose metric**: Click any metric option from the left panel
-4. **Explore data**: Hover over data points for detailed tooltips
+2. **Choose metric**: Click any metric option from the left panel
+3. **Explore data**: Hover over data points for detailed tooltips
 
 ### Customizing Settings
 

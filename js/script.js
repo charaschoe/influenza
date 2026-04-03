@@ -1,9 +1,8 @@
 $(document).ready(function () {
 	const $canvas = $(".canvas");
 	const $tooltip = $("<div>").appendTo("body");
-	const $yearDisplay = $("#year-display");
+
 	const $monthsContainer = $("#months-container");
-	let year = $("#year").val();
 	let caseModel = "Share of positive tests - All types of surveillance";
 
 	// Prepare the data
@@ -183,19 +182,12 @@ $(document).ready(function () {
 	function draw() {
 		$canvas.empty();
 		drawGridLines();
-		// Update year display
-		$yearDisplay.text(year);
-		// Filter data for the selected year and sort by date
-		const filteredData = data
-			.filter((d) => new Date(d.Date).getFullYear() == year)
-			.sort((a, b) => new Date(a.Date) - new Date(b.Date));
+
 		const maxCaseValue = Math.max(...data.map((d) => d[caseModel] || 0));
 		console.log(caseModel);
 		console.log(maxCaseValue);
-
 		// Generate all months for the selected year
 		// const months = generateMonths(year);
-
 		let months = [];
 		for (let i = 2012; i < 2021; i++) {
 			let month = generateMonths(i);
@@ -447,16 +439,6 @@ $(document).ready(function () {
 		createMonthLabels();
 	}
 
-	$("#year").on("input change", function () {
-		const newYear = parseInt($(this).val());
-		if (newYear >= 2009 && newYear <= 2024) {
-			year = newYear;
-			draw();
-		} else {
-			$(this).val(year); // Reset to previous valid value
-		}
-	});
-
 	$(".case-model-option").on("click", function () {
 		const validModels = [
 			"Reported cases of influenza-like illnesses",
@@ -517,7 +499,6 @@ $(document).ready(function () {
 
 	// Update timestamps on any interaction
 	$(".case-model-option").on("click", updateTimestamps);
-	$("#year").on("input change", updateTimestamps);
 
 	// Initialize timestamps
 	updateTimestamps();
@@ -750,17 +731,17 @@ $(document).ready(function () {
 		const $yearsSelect = $("#comparison-years");
 		const $seasonalYearSelect = $("#seasonal-year");
 
-		years.forEach((year) => {
-			$yearSelect.append(`<option value="${year}">${year}</option>`);
-			$yearsSelect.append(`<option value="${year}">${year}</option>`);
+		years.forEach((yr) => {
+			$yearSelect.append(`<option value="${yr}">${yr}</option>`);
+			$yearsSelect.append(`<option value="${yr}">${yr}</option>`);
 			$seasonalYearSelect.append(
-				`<option value="${year}">${year}</option>`
+				`<option value="${yr}">${yr}</option>`
 			);
 		});
 
-		// Set default to current year
-		$yearSelect.val(year);
-		$seasonalYearSelect.val(year);
+		// Set default to last available year
+		$yearSelect.val(years[years.length - 1]);
+		$seasonalYearSelect.val(years[years.length - 1]);
 
 		// Toggle comparison panel
 		$("#toggle-comparison").on("click", function () {
@@ -1033,62 +1014,6 @@ $(document).ready(function () {
 		return insights;
 	}
 
-	// Comparison functionality
-	function initializeComparison() {
-		// Populate year dropdown
-		const years = [
-			...new Set(data.map((d) => new Date(d.Date).getFullYear())),
-		].sort();
-		const $yearSelect = $("#comparison-year");
-		const $yearsSelect = $("#comparison-years");
-
-		years.forEach((year) => {
-			$yearSelect.append(`<option value="${year}">${year}</option>`);
-			$yearsSelect.append(`<option value="${year}">${year}</option>`);
-		});
-
-		// Set default to current year
-		$yearSelect.val(year);
-
-		// Toggle comparison panel
-		$("#toggle-comparison").on("click", function () {
-			$("#comparison-content").toggle();
-		});
-
-		// Handle comparison mode changes
-		$('input[name="comparison-mode"]').on("change", function () {
-			const mode = $(this).val();
-			$(".comparison-filters").hide();
-
-			if (mode === "monthly") {
-				$("#monthly-filters").show();
-			} else if (mode === "yearly") {
-				$("#yearly-filters").show();
-			} else {
-				$("#monthly-filters").show(); // seasonal uses monthly filters
-			}
-		});
-
-		// Run comparison
-		$("#run-comparison").on("click", function () {
-			const mode = $('input[name="comparison-mode"]:checked').val();
-			if (mode === "monthly") {
-				runCountryComparison();
-			} else if (mode === "seasonal") {
-				runSeasonalComparison();
-			}
-		});
-
-		// Run seasonal comparison
-		$("#run-seasonal-comparison").on("click", function () {
-			runSeasonalComparison();
-		});
-
-		// Run yearly comparison
-		$("#run-yearly-comparison").on("click", function () {
-			runYearlyComparison();
-		});
-	}
 
 	function runCountryComparison() {
 		const selectedMonth = $("#comparison-month").val();
