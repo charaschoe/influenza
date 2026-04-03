@@ -63,7 +63,7 @@ A sophisticated interactive dashboard visualizing WHO FluNet data (2009-2024) ac
 **Revolutionary Circular Data Architecture**
 
 -   **12-Month Cycles**: Each complete rotation = 1 year
--   **Multi-Year Spirals**: Seamless navigation through 2009-2024
+-   **Multi-Year Spiral**: Full 2012-2020 data range displayed at once
 -   **Radial Positioning**: Month-based angular positioning with country clustering
 -   **Dynamic Scaling**: Real-time data point sizing based on selected metrics
 
@@ -329,7 +329,7 @@ The proprietary seasonal risk algorithm uses sophisticated statistical methods:
 
 -   **Memory Management**: Dynamic DOM cleanup prevents memory leaks
 -   **Animation Optimization**: Configurable transitions for performance tuning
--   **Data Caching**: Efficient data structure for rapid year/metric switching
+-   **Data Caching**: Efficient data structure for rapid metric switching
 -   **Lazy Loading**: On-demand calculation for complex seasonal risk analysis
 
 ## License & Attribution
@@ -342,4 +342,4 @@ The proprietary seasonal risk algorithm uses sophisticated statistical methods:
 
 ---
 
-_Last Updated: December 2024 | Version 2.0 - Text-Only Settings Enhancement_
+_Last Updated: April 2026 — Cleanup: removed unused year control_
