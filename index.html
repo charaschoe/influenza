@@ -35,7 +35,8 @@
 
 
 		<div class="year-isolation-controls">
-			<button id="year-iso-clear" class="year-iso-btn" title="Show all years">All Years</button>
+			<span class="year-iso-label">Isolate Year:</span>
+			<button id="year-iso-clear" class="year-iso-btn" title="Show all years">All</button>
 			<div class="year-iso-dots"></div>
 		</div>
 		<div class="controls">
@@ -135,6 +136,22 @@
 						/>
 						Multi-Year Analysis
 					</label>
+				</div>
+
+				<div
+					class="comparison-filters"
+					id="seasonal-filters"
+					style="display: none"
+				>
+					<div class="filter-group">
+						<label for="comparison-year-seasonal">Year:</label>
+						<select id="comparison-year-seasonal">
+							<!-- Populated dynamically -->
+						</select>
+					</div>
+					<div class="comparison-buttons">
+						<button id="run-seasonal-comparison">Run Seasonal Analysis</button>
+					</div>
 				</div>
 
 				<div

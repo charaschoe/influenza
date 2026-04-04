@@ -702,11 +702,15 @@ $(document).ready(function () {
 		const $yearSelect = $("#comparison-year");
 		const $yearsSelect = $("#comparison-years");
 		const $seasonalYearSelect = $("#seasonal-year");
+		const $seasonalYearCompare = $("#comparison-year-seasonal");
 
 		years.forEach((yr) => {
 			$yearSelect.append(`<option value="${yr}">${yr}</option>`);
 			$yearsSelect.append(`<option value="${yr}">${yr}</option>`);
 			$seasonalYearSelect.append(
+				`<option value="${yr}">${yr}</option>`
+			);
+			$seasonalYearCompare.append(
 				`<option value="${yr}">${yr}</option>`
 			);
 		});
@@ -738,10 +742,11 @@ $(document).ready(function () {
 		$('input[name="comparison-mode"]').on("change", function () {
 			const mode = $(this).val();
 			$(".comparison-filters").hide();
-			if (mode === "yearly") {
+			if (mode === "seasonal") {
+				$("#seasonal-filters").show();
+			} else if (mode === "yearly") {
 				$("#yearly-filters").show();
 			}
-			// "seasonal" mode has no extra filters
 		});
 
 		// Run seasonal comparison
@@ -1014,7 +1019,7 @@ $(document).ready(function () {
 	draw();
 
 	function runSeasonalComparison() {
-		const selectedYear = $("#comparison-year").val();
+		const selectedYear = $("#comparison-year-seasonal").val();
 
 		// Get seasonal data for all countries for the selected year
 		const seasonalData = {};
@@ -1950,14 +1955,18 @@ $(document).ready(function () {
 	const activeIsolationYears = [];
 
 	function buildYearIsolationUI() {
-		const years = [...new Set(data.map(d => parseInt(d.Date.slice(0, 4))))].sort();
+		const years = [];
+		for (let y = 2012; y <= 2020; y++) {
+			years.push(y);
+		}
 		const container = $(".year-iso-dots");
 		container.empty();
-
 		years.forEach(year => {
 			$("<div>")
 				.addClass("year-iso-year")
 				.attr("data-year", year)
+				.attr("title", "Select year " + year)
+				.text(year)
 				.on("click", () => toggleYearIsolation(year))
 				.appendTo(container);
 		});
