@@ -71,14 +71,9 @@ $(document).ready(function () {
 	// Initialize country colors using the entire dataset once
 	assignColorsToCountries(data);
 
+
 	// Generate all months in a given year
-	function generateMonths(year) {
-		const months = [];
-		for (let month = 0; month < 12; month++) {
-			months.push(new Date(year, month, 1));
-		}
-		return months;
-	}
+
 
 	// Create month labels
 	function createMonthLabels() {
@@ -167,12 +162,11 @@ $(document).ready(function () {
 		drawGridLines();
 
 		const maxCaseValue = Math.max(...data.map((d) => d[caseModel] || 0));
-		// Generate all months for the selected year
-		// const months = generateMonths(year);
-		let months = [];
-		for (let i = 2012; i < 2021; i++) {
-			let month = generateMonths(i);
-			months = months.concat(month);
+		const months = [];
+		for (let y = 2012; y < 2021; y++) {
+			for (let m = 0; m < 12; m++) {
+				months.push(new Date(y, m, 1));
+			}
 		}
 		const totalDots = months.length * Object.keys(countryColors).length;
 		const radiusIncrement = 20 / 72; // Fixed radius increment for spacing (30px per full circle; 6 countries * 12 month = 72 dots)
