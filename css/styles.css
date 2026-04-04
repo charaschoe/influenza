@@ -587,7 +587,6 @@ body {
 	margin-top: 10px;
 }
 
-#run-comparison,
 #run-seasonal-comparison {
 	background: #ff4c4c;
 	border: none;
@@ -599,7 +598,6 @@ body {
 	flex: 1;
 }
 
-#run-comparison:hover,
 #run-seasonal-comparison:hover {
 	background: #ff6666;
 }
