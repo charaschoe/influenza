@@ -39,10 +39,8 @@ $(document).ready(function () {
 			// Show/hide seasonal risk analysis panel
 			if (newModel.includes("Seasonal Risk Patterns")) {
 				$("#seasonal-risk-analysis").show();
-				$("#toggle-comparison").text("Risk Pattern Analysis");
 			} else {
 				$("#seasonal-risk-analysis").hide();
-				$("#toggle-comparison").text("Country Analysis");
 			}
 
 			draw();
@@ -716,11 +714,6 @@ $(document).ready(function () {
 		// Set default to last available year
 		$yearSelect.val(years[years.length - 1]);
 		$seasonalYearSelect.val(years[years.length - 1]);
-
-		// Toggle comparison panel
-		$("#toggle-comparison").on("click", function () {
-			$("#comparison-content").toggle();
-		});
 
 		// Seasonal Risk Pattern Analysis
 		$("#analyze-seasonal-risk").on("click", function () {
