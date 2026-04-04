@@ -18,23 +18,6 @@ $(document).ready(function () {
 	// Calculate seasonal risk patterns
 	calculateSeasonalRiskPatterns();
 
-	// Debug: Check if seasonal risk patterns were calculated
-	const sampleSeasonalData = data.filter(
-		(d) =>
-			d[
-				"Seasonal Risk Patterns - Which countries have the most predictable/severe seasons"
-			] > 0
-	);
-	console.log(
-		`Calculated seasonal risk patterns for ${sampleSeasonalData.length} data points`
-	);
-	if (sampleSeasonalData.length > 0) {
-		console.log(
-			"Sample seasonal risk data:",
-			sampleSeasonalData.slice(0, 5)
-		);
-	}
-
 	// Event listener for case model selection
 	$(".case-model-option").on("click", function () {
 		const validModels = [
@@ -184,8 +167,6 @@ $(document).ready(function () {
 		drawGridLines();
 
 		const maxCaseValue = Math.max(...data.map((d) => d[caseModel] || 0));
-		console.log(caseModel);
-		console.log(maxCaseValue);
 		// Generate all months for the selected year
 		// const months = generateMonths(year);
 		let months = [];
@@ -217,7 +198,6 @@ $(document).ready(function () {
 				angle = gmynd.radians(angleDeg + (360 / 12 / 6) * countryIndex);
 				let x = Math.cos(angle) * radius + $canvas.width() / 2;
 				let y = Math.sin(angle) * radius + $canvas.height() / 2;
-				console.log(country, monthString, value);
 
 				// Get current settings or use defaults
 				const settings = window.visualizationSettings || {
