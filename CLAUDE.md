@@ -100,3 +100,13 @@ npx serve .
 - Data is inline JS array, not fetched via API
 - All code is in a single IIFE-like `$(document).ready)` block
 - No year selector exists — the spiral always renders 2012–2020 data
+
+## TODO
+
+- [ ] Remove `data/influenza.js` (raw data backup, not referenced by code or build)
+- [ ] Remove untracked `plan.md` from working directory
+- [ ] Remove orphaned `console.log` statements in `js/script.js` (lines ~188-189, ~222)
+- [ ] Clean up `settings` example text still referencing "year changes"
+- [ ] Consider removing or renaming "Multi-Year Analysis" comparison mode — year selector is gone, only comparison panel has year dropdowns
+- [x] Remove unused `generateMonths()` standalone helper (inlined into draw() loop)
+- [ ] Remove `plan.md` from git index if accidentally added
