@@ -738,24 +738,10 @@ $(document).ready(function () {
 		$('input[name="comparison-mode"]').on("change", function () {
 			const mode = $(this).val();
 			$(".comparison-filters").hide();
-
-			if (mode === "monthly") {
-				$("#monthly-filters").show();
-			} else if (mode === "yearly") {
+			if (mode === "yearly") {
 				$("#yearly-filters").show();
-			} else {
-				$("#monthly-filters").show(); // seasonal uses monthly filters
 			}
-		});
-
-		// Run comparison
-		$("#run-comparison").on("click", function () {
-			const mode = $('input[name="comparison-mode"]:checked').val();
-			if (mode === "monthly") {
-				runCountryComparison();
-			} else if (mode === "seasonal") {
-				runSeasonalComparison();
-			}
+			// "seasonal" mode has no extra filters
 		});
 
 		// Run seasonal comparison
@@ -981,114 +967,6 @@ $(document).ready(function () {
 		return insights;
 	}
 
-
-	function runCountryComparison() {
-		const selectedMonth = $("#comparison-month").val();
-		const selectedYear = $("#comparison-year").val();
-		const targetDate = `${selectedYear}-${selectedMonth}`;
-
-		// Get data for all countries for the selected month/year
-		const comparisonData = [];
-		Object.keys(countryColors).forEach((country) => {
-			const countryData = data.find(
-				(d) => d.Date.startsWith(targetDate) && d.Country === country
-			);
-
-			if (countryData) {
-				const value = parseFloat(countryData[caseModel]) || 0;
-				comparisonData.push({
-					country: country,
-					value: value,
-					color: countryColors[country],
-					data: countryData,
-				});
-			}
-		});
-
-		// Sort by value (descending)
-		comparisonData.sort((a, b) => b.value - a.value);
-
-		// Display results
-		displayComparisonResults(comparisonData, selectedMonth, selectedYear);
-	}
-
-	function displayComparisonResults(comparisonData, month, year) {
-		const $results = $("#comparison-results");
-		$results.empty();
-
-		if (comparisonData.length === 0) {
-			$results.html(
-				'<p style="color: #666; font-style: italic;">No data available for the selected period.</p>'
-			);
-			return;
-		}
-
-		// Add header
-		const monthNames = [
-			"",
-			"January",
-			"February",
-			"March",
-			"April",
-			"May",
-			"June",
-			"July",
-			"August",
-			"September",
-			"October",
-			"November",
-			"December",
-		];
-		const monthName = monthNames[parseInt(month)];
-
-		$results.append(`
-			<div style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #444;">
-				<strong>Comparison for ${monthName} ${year}</strong>
-				<br><small style="color: #999;">${getCaseModelDisplayName(caseModel)}</small>
-			</div>
-		`);
-
-		// Display each country
-		comparisonData.forEach((item, index) => {
-			const formattedValue = formatValue(item.value, caseModel);
-			const rankSuffix = getRankSuffix(index + 1);
-
-			// Calculate relative intensity for visual comparison
-			const maxValue = Math.max(...comparisonData.map((d) => d.value));
-			const intensity = maxValue > 0 ? item.value / maxValue : 0;
-			const barWidth = Math.max(intensity * 100, 2); // Minimum 2% width
-
-			$results.append(`
-				<div class="country-comparison-item" style="border-left-color: ${item.color};">
-					<div class="country-name">
-						<span class="color-indicator" style="background-color: ${item.color};"></span>
-						${item.country}
-					</div>
-					<div class="value">${formattedValue}</div>
-					<div class="rank">${index + 1}${rankSuffix} highest</div>
-					<div style="background: ${
-						item.color
-					}; height: 4px; width: ${barWidth}%; margin-top: 5px; border-radius: 2px; opacity: 0.7;"></div>
-				</div>
-			`);
-		});
-
-		// Add summary statistics
-		if (comparisonData.length > 1) {
-			const values = comparisonData.map((d) => d.value);
-			const average = values.reduce((a, b) => a + b, 0) / values.length;
-			const highest = Math.max(...values);
-			const lowest = Math.min(...values);
-
-			$results.append(`
-				<div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #444; font-size: 11px; color: #999;">
-					<div>Highest: ${formatValue(highest, caseModel)}</div>
-					<div>Average: ${formatValue(average, caseModel)}</div>
-					<div>Lowest: ${formatValue(lowest, caseModel)}</div>
-				</div>
-			`);
-		}
-	}
 
 	function getCaseModelDisplayName(model) {
 		const caseModelDisplayNames = {
@@ -2067,4 +1945,97 @@ $(document).ready(function () {
 
 	// Initialize settings functionality
 	initializeSettings();
+
+	// Year Isolation on Spiral
+	const activeIsolationYears = [];
+
+	function buildYearIsolationUI() {
+		const years = [...new Set(data.map(d => parseInt(d.Date.slice(0, 4))))].sort();
+		const container = $(".year-iso-dots");
+		container.empty();
+
+		years.forEach(year => {
+			$("<div>")
+				.addClass("year-iso-year")
+				.attr("data-year", year)
+				.on("click", () => toggleYearIsolation(year))
+				.appendTo(container);
+		});
+	}
+
+	function toggleYearIsolation(year) {
+		const idx = activeIsolationYears.indexOf(year);
+		if (idx > -1) {
+			activeIsolationYears.splice(idx, 1);
+		} else {
+			if (activeIsolationYears.length >= 2) {
+				return;
+			}
+			activeIsolationYears.push(year);
+			activeIsolationYears.sort((a, b) => a - b);
+		}
+		applyYearIsolation();
+		updateYearIsolationUI();
+	}
+
+	function applyYearIsolation() {
+		$(".dot").removeClass("dimmed isolated");
+
+		if (activeIsolationYears.length === 0) {
+			const settings = window.visualizationSettings || {};
+			$(".dot").each(function() {
+				const val = parseFloat($(this).data("value")) || 0;
+				if (!settings.showZeroValues && val === 0) {
+					$(this).hide();
+				} else {
+					$(this).show();
+				}
+			});
+			return;
+		}
+
+		const yearStrings = activeIsolationYears.map(y => y.toString());
+
+		$(".dot").each(function() {
+			const $dot = $(this);
+			const dotMonth = $dot.data("month");
+			const dotYear = dotMonth.slice(0, 4);
+			const val = parseFloat($dot.data("value")) || 0;
+
+			if (!yearStrings.includes(dotYear)) {
+				$dot.addClass("dimmed");
+			} else {
+				$dot.addClass("isolated");
+				if (val === 0) {
+					$dot.hide();
+				}
+			}
+		});
+	}
+
+	function updateYearIsolationUI() {
+		$(".year-iso-year").each(function() {
+			const year = parseInt($(this).data("year"));
+			$(this).toggleClass("selected", activeIsolationYears.includes(year));
+		});
+		$("#year-iso-clear").toggleClass("active", activeIsolationYears.length > 0);
+	}
+
+	function resetYearIsolation() {
+		activeIsolationYears.length = 0;
+		$(".dot").removeClass("dimmed isolated");
+		const settings = window.visualizationSettings || {};
+		$(".dot").each(function() {
+			const val = parseFloat($(this).data("value")) || 0;
+			if (!settings.showZeroValues && val === 0) {
+				$(this).hide();
+			} else {
+				$(this).show();
+			}
+		});
+		updateYearIsolationUI();
+	}
+
+	buildYearIsolationUI();
+	$("#year-iso-clear").on("click", resetYearIsolation);
 });

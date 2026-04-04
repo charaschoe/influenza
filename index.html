@@ -34,6 +34,10 @@
 		<div class="canvas" id="canvas"></div>
 
 
+		<div class="year-isolation-controls">
+			<button id="year-iso-clear" class="year-iso-btn" title="Show all years">All Years</button>
+			<div class="year-iso-dots"></div>
+		</div>
 		<div class="controls">
 			<div
 				class="case-model-option selected"
@@ -118,16 +122,8 @@
 						<input
 							type="radio"
 							name="comparison-mode"
-							value="monthly"
-							checked
-						/>
-						Monthly Comparison
-					</label>
-					<label>
-						<input
-							type="radio"
-							name="comparison-mode"
 							value="seasonal"
+							checked
 						/>
 						Seasonal Overview
 					</label>
@@ -139,38 +135,6 @@
 						/>
 						Multi-Year Analysis
 					</label>
-				</div>
-
-				<div class="comparison-filters" id="monthly-filters">
-					<div class="filter-group">
-						<label for="comparison-month">Select Month:</label>
-						<select id="comparison-month">
-							<option value="01">January</option>
-							<option value="02">February</option>
-							<option value="03">March</option>
-							<option value="04">April</option>
-							<option value="05">May</option>
-							<option value="06">June</option>
-							<option value="07">July</option>
-							<option value="08">August</option>
-							<option value="09">September</option>
-							<option value="10">October</option>
-							<option value="11">November</option>
-							<option value="12">December</option>
-						</select>
-					</div>
-					<div class="filter-group">
-						<label for="comparison-year">Select Year:</label>
-						<select id="comparison-year">
-							<!-- Years will be populated dynamically -->
-						</select>
-					</div>
-					<div class="comparison-buttons">
-						<button id="run-comparison">Compare Month</button>
-						<button id="run-seasonal-comparison">
-							Seasonal Overview
-						</button>
-					</div>
 				</div>
 
 				<div

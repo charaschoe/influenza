@@ -1173,6 +1173,76 @@ body {
 	background: linear-gradient(135deg, #ff6666, #ff8888);
 }
 
+/* Year Isolation Controls */
+.year-isolation-controls {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 10;
+}
+
+.year-iso-btn {
+    background: none;
+    color: #999;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 3px 10px;
+    font-size: 11px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    transition: all 0.2s ease;
+}
+
+.year-iso-btn:hover {
+    color: white;
+    border-color: #999;
+}
+
+.year-iso-btn.active {
+    color: #ff4c4c;
+    border-color: #ff4c4c;
+}
+
+.year-iso-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.year-iso-year {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #555;
+    border: 1px solid #666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.year-iso-year:hover {
+    background: #777;
+}
+
+.year-iso-year.selected {
+    background: #ff4c4c;
+    border-color: #ff4c4c;
+}
+
+/* Dot states for year isolation */
+.dot.dimmed {
+    opacity: 0.12 !important;
+    filter: brightness(0.4);
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+
+.dot.isolated {
+    filter: none;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
 	.settings-content {
