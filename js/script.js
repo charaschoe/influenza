@@ -102,7 +102,7 @@ $(document).ready(function () {
 		$monthsContainer.empty();
 		const radius = 400; // Adjusted radius for month labels to be at the outer edge
 		monthNames.forEach((month, i) => {
-			const angle = (i * 30 - 90 + 15) * (Math.PI / 180); // Angle for each month label
+			const angle = (i * 30 - 90 + 15 + 0) * (Math.PI / 180);
 			const x = Math.cos(angle) * radius + $canvas.width() / 2; // Adjusted radius for month labels
 			const y = Math.sin(angle) * radius + $canvas.height() / 2;
 			$("<div>")
@@ -173,10 +173,7 @@ $(document).ready(function () {
 		months.forEach((month, monthIndex) => {
 			const angleStart = ((monthIndex * 360) / 12 - 90) * (Math.PI / 180); // Starting angle for each month
 			Object.keys(countryColors).forEach((country, countryIndex) => {
-				const monthString = month
-					.toISOString()
-					.split("T")[0]
-					.slice(0, 7);
+				const monthString = `${month.getFullYear()}-${String(month.getMonth() + 1).padStart(2, "0")}`;
 				const monthData = data.find(
 					(d) =>
 						d.Date.startsWith(monthString) && d.Country === country

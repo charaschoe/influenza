@@ -75,8 +75,7 @@ Three modes:
 ├── css/styles.css       # Dark theme, overlay panels, tooltip styling
 ├── js/script.js         # All application logic (~2100 lines)
 ├── data/
-│   ├── influenza_six.js # WHO data (global `data` array)
-│   └── influenza.js     # Raw data backup
+│   └── influenza_six.js # WHO data (global `data` array)
 └── lib/
     ├── gmynd.js         # Math utilities (degrees, radians)
     └── jquery-3.7.1.min.js
@@ -101,12 +100,24 @@ npx serve .
 - All code is in a single IIFE-like `$(document).ready)` block
 - No year selector exists — the spiral always renders 2012–2020 data
 
+## Gotchas
+
+- **Never use `toISOString()` for month strings on dots** — `Date(year, month, 1)` at local midnight shifts to UTC and breaks month mapping in non-UTC timezones like CET. Use `` `${year}-${String(month + 1).padStart(2, "0")}` `` instead.
+- Month labels use `+15°` offset from grid line angles to center within each 30° sector. Dot angles share the same base `-90°` origin as labels and grid lines.
+
+### Available Metrics (caseModel)
+
+| Metric | Key |
+|--------|-----|
+| ILI Cases | `"Reported cases of influenza-like illnesses"` |
+| ARI Cases | `"Reported cases of acute respiratory infections"` |
+| SARI Cases | `"Reported cases of severe acute respiratory infections"` |
+| SARI Deaths | `"Reported deaths caused by severe acute respiratory infections"` |
+| ILI per 1000 | `"Reported cases of influenza-like illness per thousand outpatients"` |
+| Test Positivity | `"Share of positive tests - All types of surveillance"` |
+| Seasonal Risk | `"Seasonal Risk Patterns - Which countries have the most predictable/severe seasons"` |
+
 ## TODO
 
-- [ ] Remove `data/influenza.js` (raw data backup, not referenced by code or build)
-- [ ] Remove untracked `plan.md` from working directory
-- [ ] Remove orphaned `console.log` statements in `js/script.js` (lines ~188-189, ~222)
 - [ ] Clean up `settings` example text still referencing "year changes"
 - [ ] Consider removing or renaming "Multi-Year Analysis" comparison mode — year selector is gone, only comparison panel has year dropdowns
-- [x] Remove unused `generateMonths()` standalone helper (inlined into draw() loop)
-- [ ] Remove `plan.md` from git index if accidentally added

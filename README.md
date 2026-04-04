@@ -158,7 +158,7 @@ Created by Jonas Wienberg
 
 ---
 
-© 2025 All Rights Reserved
+© 2026 All Rights Reserved
 
 ## Function Documentation
 
@@ -310,8 +310,7 @@ The proprietary seasonal risk algorithm uses sophisticated statistical methods:
 ├── js/
 │   └── script.js          # Core functionality (1900+ lines)
 ├── data/
-│   ├── influenza_six.js   # Processed WHO data
-│   └── influenza.js       # Raw data backup
+│   └── influenza_six.js   # Processed WHO data
 └── lib/
     ├── gmynd.js          # Mathematical utilities
     └── jquery-3.7.1.min.js # jQuery framework
