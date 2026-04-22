@@ -285,7 +285,9 @@ $(document).ready(function () {
 				for (let i = 1; i <= 12; i++) {
 					const prevDate = new Date(currentDate);
 					prevDate.setMonth(prevDate.getMonth() - i);
-					const prevMonthString = prevDate.toISOString().slice(0, 7);
+					const year = prevDate.getFullYear();
+					const month = String(prevDate.getMonth() + 1).padStart(2, "0");
+					const prevMonthString = year + "-" + month;
 
 					const prevData = data.find(
 						(d) =>
