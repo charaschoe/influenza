@@ -128,14 +128,6 @@
 						/>
 						Seasonal Overview
 					</label>
-					<label>
-						<input
-							type="radio"
-							name="comparison-mode"
-							value="yearly"
-						/>
-						Multi-Year Analysis
-					</label>
 				</div>
 
 				<div
@@ -151,34 +143,6 @@
 					</div>
 					<div class="comparison-buttons">
 						<button id="run-seasonal-comparison">Run Seasonal Analysis</button>
-					</div>
-				</div>
-
-				<div
-					class="comparison-filters"
-					id="yearly-filters"
-					style="display: none"
-				>
-					<div class="filter-group">
-						<label
-							>Select Years (hold Ctrl/Cmd for multiple):</label
-						>
-						<select id="comparison-years" multiple size="5">
-							<!-- Years will be populated dynamically -->
-						</select>
-					</div>
-					<div class="filter-group">
-						<label for="yearly-metric">Focus Metric:</label>
-						<select id="yearly-metric">
-							<option value="peak">Peak Values</option>
-							<option value="total">Annual Totals</option>
-							<option value="average">Monthly Averages</option>
-						</select>
-					</div>
-					<div class="comparison-buttons">
-						<button id="run-yearly-comparison">
-							Analyze Years
-						</button>
 					</div>
 				</div>
 

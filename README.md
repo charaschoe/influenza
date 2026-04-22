@@ -93,8 +93,7 @@ A sophisticated interactive dashboard visualizing WHO FluNet data (2009-2024) ac
 
 -   **Monthly Comparison**: Deep-dive single month analysis across countries
 -   **Seasonal Overview**: Winter/summer pattern comparisons
--   **Multi-Year Analysis**: Long-term trend identification and peak value tracking
--   **Risk Pattern Analysis**: Seasonal risk threshold filtering and insights generation
+-   **Seasonal Risk Analysis**: Seasonal risk threshold filtering and insights generation
 
 ## Technical Architecture
 
@@ -277,7 +276,6 @@ Created by Jonas Wienberg
 
 -   **Country Analysis**: Use "Country Analysis" panel for detailed comparisons
 -   **Seasonal Risk**: Select "Seasonal Risk Patterns" for AI-enhanced analysis
--   **Multi-year comparison**: Use yearly analysis mode for trend identification
 -   **Accessibility**: Enable high contrast mode for enhanced visibility
 
 ## Data Sources & Methodology

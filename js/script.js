@@ -699,13 +699,11 @@ $(document).ready(function () {
 			...new Set(data.map((d) => new Date(d.Date).getFullYear())),
 		].sort();
 		const $yearSelect = $("#comparison-year");
-		const $yearsSelect = $("#comparison-years");
 		const $seasonalYearSelect = $("#seasonal-year");
 		const $seasonalYearCompare = $("#comparison-year-seasonal");
 
 		years.forEach((yr) => {
 			$yearSelect.append(`<option value="${yr}">${yr}</option>`);
-			$yearsSelect.append(`<option value="${yr}">${yr}</option>`);
 			$seasonalYearSelect.append(
 				`<option value="${yr}">${yr}</option>`
 			);
@@ -743,8 +741,6 @@ $(document).ready(function () {
 			$(".comparison-filters").hide();
 			if (mode === "seasonal") {
 				$("#seasonal-filters").show();
-			} else if (mode === "yearly") {
-				$("#yearly-filters").show();
 			}
 		});
 
@@ -752,225 +748,7 @@ $(document).ready(function () {
 		$("#run-seasonal-comparison").on("click", function () {
 			runSeasonalComparison();
 		});
-
-		// Run yearly comparison
-		$("#run-yearly-comparison").on("click", function () {
-			runYearlyComparison();
-		});
 	}
-
-	function runYearlyComparison() {
-		const selectedYears = $("#comparison-years").val() || [];
-		const metric = $("#yearly-metric").val();
-
-		if (selectedYears.length === 0) {
-			$("#comparison-results").html(
-				'<p style="color: #ff6666; font-style: italic;">Please select at least one year.</p>'
-			);
-			return;
-		}
-
-		// Collect data for all selected years
-		const yearlyData = {};
-
-		selectedYears.forEach((year) => {
-			yearlyData[year] = {};
-			Object.keys(countryColors).forEach((country) => {
-				yearlyData[year][country] = {
-					country: country,
-					color: countryColors[country],
-					values: [],
-					peak: 0,
-					total: 0,
-					average: 0,
-				};
-
-				// Collect all monthly data for this year and country
-				for (let month = 1; month <= 12; month++) {
-					const monthStr = month.toString().padStart(2, "0");
-					const targetDate = `${year}-${monthStr}`;
-
-					const monthData = data.find(
-						(d) =>
-							d.Date.startsWith(targetDate) &&
-							d.Country === country
-					);
-
-					const value = monthData
-						? parseFloat(monthData[caseModel]) || 0
-						: 0;
-					yearlyData[year][country].values.push(value);
-					yearlyData[year][country].total += value;
-					yearlyData[year][country].peak = Math.max(
-						yearlyData[year][country].peak,
-						value
-					);
-				}
-
-				yearlyData[year][country].average =
-					yearlyData[year][country].total / 12;
-			});
-		});
-
-		displayYearlyComparison(yearlyData, metric, selectedYears);
-	}
-
-	function displayYearlyComparison(yearlyData, metric, selectedYears) {
-		const $results = $("#comparison-results");
-		$results.empty();
-
-		// Add header
-		$results.append(`
-			<div style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #444;">
-				<strong>Multi-Year Analysis (${selectedYears.join(", ")})</strong>
-				<br><small style="color: #999;">${getCaseModelDisplayName(
-					caseModel
-				)} - Focus: ${metric}</small>
-			</div>
-		`);
-
-		// For each year, show country comparison
-		selectedYears.forEach((year) => {
-			const yearData = yearlyData[year];
-			const countries = Object.values(yearData);
-
-			// Sort countries by the selected metric
-			countries.sort((a, b) => {
-				if (metric === "peak") return b.peak - a.peak;
-				if (metric === "total") return b.total - a.total;
-				if (metric === "average") return b.average - a.average;
-				return 0;
-			});
-
-			$results.append(`
-				<div class="year-comparison-item">
-					<div class="year-header">${year}</div>
-					<div class="year-stats">
-						${countries
-							.map((country, index) => {
-								if (country.total === 0) return ""; // Skip countries with no data
-
-								const value =
-									metric === "peak"
-										? country.peak
-										: metric === "total"
-										? country.total
-										: country.average;
-								const formattedValue = formatValue(
-									value,
-									caseModel
-								);
-								const rank = index + 1;
-
-								return `
-								<div class="stat-item">
-									<div class="stat-value" style="color: ${country.color};">
-										${formattedValue}
-									</div>
-									<div class="stat-label">
-										${country.country}<br>#${rank}
-									</div>
-								</div>
-							`;
-							})
-							.join("")}
-					</div>
-				</div>
-			`);
-		});
-
-		// Add cross-year insights
-		if (selectedYears.length > 1) {
-			const insights = generateYearlyInsights(
-				yearlyData,
-				metric,
-				selectedYears
-			);
-			if (insights.length > 0) {
-				$results.append(`
-					<div class="comparison-insights">
-						<strong>Cross-Year Insights:</strong>
-						${insights
-							.map(
-								(insight) =>
-									`<div style="margin-top: 4px; font-size: 11px;">• ${insight}</div>`
-							)
-							.join("")}
-					</div>
-				`);
-			}
-		}
-	}
-
-	function generateYearlyInsights(yearlyData, metric, selectedYears) {
-		const insights = [];
-
-		// Find countries with consistently high values
-		const consistentPerformers = {};
-		Object.keys(countryColors).forEach((country) => {
-			let topRanks = 0;
-			selectedYears.forEach((year) => {
-				const yearData = Object.values(yearlyData[year]);
-				yearData.sort((a, b) => {
-					if (metric === "peak") return b.peak - a.peak;
-					if (metric === "total") return b.total - a.total;
-					if (metric === "average") return b.average - a.average;
-					return 0;
-				});
-
-				const rank =
-					yearData.findIndex((c) => c.country === country) + 1;
-				if (rank <= 2 && rank > 0) topRanks++;
-			});
-
-			if (topRanks >= selectedYears.length - 1) {
-				consistentPerformers[country] = topRanks;
-			}
-		});
-
-		if (Object.keys(consistentPerformers).length > 0) {
-			const performers = Object.keys(consistentPerformers).join(", ");
-			insights.push(`Consistently high impact: ${performers}`);
-		}
-
-		// Find biggest year-over-year changes
-		if (selectedYears.length === 2) {
-			const [year1, year2] = selectedYears.sort();
-			let biggestIncrease = { country: "", change: 0 };
-			let biggestDecrease = { country: "", change: 0 };
-
-			Object.keys(countryColors).forEach((country) => {
-				const value1 = yearlyData[year1][country][metric];
-				const value2 = yearlyData[year2][country][metric];
-				const change = value2 - value1;
-
-				if (change > biggestIncrease.change) {
-					biggestIncrease = { country, change };
-				}
-				if (change < biggestDecrease.change) {
-					biggestDecrease = { country, change };
-				}
-			});
-
-			if (biggestIncrease.change > 0) {
-				insights.push(
-					`Biggest increase: ${
-						biggestIncrease.country
-					} (+${formatValue(biggestIncrease.change, caseModel)})`
-				);
-			}
-			if (biggestDecrease.change < 0) {
-				insights.push(
-					`Biggest decrease: ${
-						biggestDecrease.country
-					} (${formatValue(biggestDecrease.change, caseModel)})`
-				);
-			}
-		}
-
-		return insights;
-	}
-
 
 	function getCaseModelDisplayName(model) {
 		const caseModelDisplayNames = {

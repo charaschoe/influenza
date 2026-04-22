@@ -50,8 +50,7 @@ lib/jquery-3.7.1.min.js → lib/gmynd.js → data/influenza_six.js → js/script
 Three modes:
 1. **Monthly** (`runCountryComparison`) — single month cross-country ranking
 2. **Seasonal** (`runSeasonalComparison`) — 12-month mini bar chart per country
-3. **Multi-Year** (`runYearlyComparison`) — selected years comparison
-4. **Seasonal Risk** (`runSeasonalRiskAnalysis`) — risk-score filtering + categorization (Very High ≥70, High ≥50, Moderate ≥30, Low ≥15)
+3. **Seasonal Risk** (`runSeasonalRiskAnalysis`) — risk-score filtering + categorization (Very High ≥70, High ≥50, Moderate ≥30, Low ≥15)
 
 ### Tooltip system
 
@@ -120,4 +119,4 @@ npx serve .
 ## TODO
 
 - [ ] Clean up `settings` example text still referencing "year changes"
-- [ ] Consider removing or renaming "Multi-Year Analysis" comparison mode — year selector is gone, only comparison panel has year dropdowns
+- [x] Consider removing or renaming "Multi-Year Analysis" comparison mode — year selector is gone, only comparison panel has year dropdowns
